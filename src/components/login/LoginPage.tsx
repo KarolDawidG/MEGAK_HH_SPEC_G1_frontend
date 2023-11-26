@@ -7,7 +7,59 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
+// frontend - backend logic
+import axios from 'axios';
+import {useState} from "react";
+
+//error comunications
+import { notify } from "../utils/Notify";
+
 const LoginPage = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        // Walidacja adresu e-mail
+        if (!validateEmail(email)) {
+            notify("Incorrect email. Please type correct data!");
+            console.error('Incorrect email.');
+            return;
+        }
+
+        // Logowanie danych formularza
+        console.log(`Email: ${email} | Password: ${password}`);
+
+
+        // Wywołanie API
+        try {
+            const response = await axios.post('http://example.com/login', {
+                email,
+                password,
+            });
+            if (response.status === 200) {
+                notify(response.data);
+            }
+            else {
+                notify(response.data.message);
+            }
+            console.log(response.data);
+            notify("Welcome");
+            // Dodatkowe działania po pomyślnym zalogowaniu np. redirect na strone usera/admina/hr
+
+        } catch (error) {
+            console.error('Błąd logowania', error);
+            // Obsługa błędów
+        }
+    };
+
+// validacja email
+    const validateEmail = (email: string) => {
+        const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+        return regex.test(email);
+    };
+
 
     return (
 
@@ -24,7 +76,7 @@ const LoginPage = () => {
 
                 <Typography component="h1" variant="h5">
                 </Typography>
-                <Box component="form" >
+                <Box component="form" onSubmit={handleSubmit}>
                     <TextField
                         variant="filled"
                         size="small"
@@ -35,6 +87,9 @@ const LoginPage = () => {
                         label="E-mail "
                         name="email"
                         autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+
                         autoFocus
 
 
@@ -49,6 +104,8 @@ const LoginPage = () => {
                         label="Hasło"
                         type="password"
                         id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         autoComplete="current-password"
                     />
 
