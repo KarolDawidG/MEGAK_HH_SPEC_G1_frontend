@@ -60,6 +60,7 @@ const LoginPage = () => {
         return regex.test(email);
     };
 
+    
 
     return (
 
