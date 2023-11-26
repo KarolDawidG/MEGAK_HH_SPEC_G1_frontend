@@ -6,8 +6,25 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {  FormControlLabel, MenuItem, Switch } from '@mui/material';
 
+const expectedTypeWork = [
 
+    "Brak preferencji",
+    "Na miejscu",
+    "Gotowość do przeprowadzki",
+    "Wyłącznie zdalnie",
+    "Hybrydowo",
+
+]
+
+const expectedContractType = [
+    "Brak preferencji",
+    "Tylko UoP",
+    "Możliwe B2B",
+    "Możliwe UZ/UoD",
+    
+]
 
 const StudentRegistration = () => {
 
@@ -133,10 +150,10 @@ const StudentRegistration = () => {
                         minRows="3"
                     />
 
+                    
                     <TextField
                         variant="filled"
                         size="small"
-                        margin="normal"
                         required
                         fullWidth
                         id="expectedTypeWork"
@@ -144,7 +161,20 @@ const StudentRegistration = () => {
                         name="expectedTypeWork"
                         autoComplete="expectedTypeWork"
                         autoFocus
-                    />
+                        select
+                        defaultValue={0}
+                
+                        
+                    >
+                        {
+                            expectedTypeWork.map((TypeWork, index) => {
+                                return <MenuItem key={TypeWork} value={index} > {TypeWork} </MenuItem>
+                            })
+                        }
+                    </TextField>
+
+                
+                    
 
                     <TextField
                         variant="filled"
@@ -157,19 +187,29 @@ const StudentRegistration = () => {
                         autoComplete="targetWorkCity"
                         autoFocus
                     />
+                
+                        <TextField
+                            variant="filled"
+                            size="small"
+                            required
+                            fullWidth
+                            id="expectedContractType"
+                            label="Typ kontraktu"
+                            name="expectedContractType"
+                            autoComplete="expectedContractType"
+                            autoFocus
+                            select
+                            defaultValue={0}
+                        >
+                            {
+                                expectedContractType.map((TypeContract, index) => {
+                                    return <MenuItem key={TypeContract} value={index} > {TypeContract} </MenuItem>
+                                })
+                            }
+                        </TextField>
 
-                    <TextField
-                        variant="filled"
-                        size="small"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="expectedContractType"
-                        label="Typ kontraktu"
-                        name="expectedContractType"
-                        autoComplete="expectedContractType"
-                        autoFocus
-                    />
+                 
+
                     <TextField
                         variant="filled"
                         size="small"
@@ -181,18 +221,8 @@ const StudentRegistration = () => {
                         autoComplete="expectedSalary"
                         autoFocus
                     />
-                    <TextField
-                        variant="filled"
-                        size="small"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="canTakeApprenticeship"
-                        label="Zgoda na odbycie bezpłatnych praktyk/stażu"
-                        name="canTakeApprenticeship"
-                        autoComplete="canTakeApprenticeship"
-                        autoFocus
-                    />
+  <FormControlLabel required control={<Switch name="canTakeApprenticeship" />} label="Zgoda na odbycie bezpłatnych praktyk/stażu" />
+                    
                     <TextField
                         variant="filled"
                         size="small"
@@ -215,6 +245,8 @@ const StudentRegistration = () => {
                         name="education"
                         autoComplete="education"
                         autoFocus
+                        multiline
+                        minRows="4"
                     />
                     <TextField
                         variant="filled"
@@ -259,9 +291,9 @@ const StudentRegistration = () => {
 
                         </Grid>
 
-                        <Grid item xs={2}/>
+                        <Grid item xs={2} />
 
-                    
+
                         <Grid item xs={5} >
                             <Button
                                 type="submit"
@@ -272,7 +304,7 @@ const StudentRegistration = () => {
                             </Button>
 
                         </Grid>
-                    
+
                         <Grid item xs={12}>
                             <Button
                                 type="submit"
