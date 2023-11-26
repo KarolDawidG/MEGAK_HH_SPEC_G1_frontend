@@ -1,13 +1,11 @@
+import {LogInForm} from "./Components/LogInForm/LogInForm.tsx";
 
 
 export const  App = ()=>  {
 
   return (
     <>
-      <div>
-        Start new project
-      </div>
-        
+      <LogInForm/>
     </>
   )
 }
