@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {  FormControlLabel, MenuItem, Switch } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const expectedTypeWork = [
 
@@ -306,14 +307,15 @@ const StudentRegistration = () => {
                         </Grid>
 
                         <Grid item xs={12}>
+                            <Link to="/passwordchange">
                             <Button
-                                type="submit"
+                                
                                 variant="contained"
                                 fullWidth
                             >
                                 Zmień hasło
                             </Button>
-
+                            </Link>
                         </Grid>
                     </Grid>
 
