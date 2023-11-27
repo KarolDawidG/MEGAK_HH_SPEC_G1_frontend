@@ -17,7 +17,8 @@ interface MenuOption {
 };
 
 export const Header = () => {
-    const [user, setUser] = useState<string>("Marcin R");
+    const [user, setUser] = useState<string>('Marcin R');
+    const [gitLogin, setGitLogin] = useState<string>('Swichu553')
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
@@ -46,6 +47,15 @@ export const Header = () => {
         navigate(route);
     };
 
+
+    const linkAvatarUser = () => {
+        if (gitLogin) {
+            //@TODO dodać sprawdzanie czy user istnieje
+            return `https://github.com/${gitLogin}.png`
+        }
+        return '/default_user_icon';
+    };
+
     return (
         <Container component="main" maxWidth='xl'>
             <CssBaseline />
@@ -61,7 +71,7 @@ export const Header = () => {
                 </Box>
 
                 <Box display="flex" alignItems="center">
-                    <Avatar alt="User Avatar" src="/user_avatar.jpg" />
+                    <Avatar alt="User Avatar" src={linkAvatarUser()} />
                     <Typography variant="h6" component="div" margin={2} >
                         {user}
                     </Typography>
