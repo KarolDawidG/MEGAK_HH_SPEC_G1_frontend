@@ -6,13 +6,13 @@ import { BrowserRouter , Routes, Route } from 'react-router-dom';
 import ForgotPasswordPage from "./components/forgotPassword/ForgotPassword";
 import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
-
+import { ToastContainer } from "react-toastify";
 
 export const App = () => {
 
   return (
     <>
-
+       <ToastContainer limit={3} />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Routes>
