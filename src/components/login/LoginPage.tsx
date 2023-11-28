@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 // frontend - backend logic
 import axios from 'axios';
 import {useState} from "react";
+import { URL_LOGIN } from '../utils/backend-links';
 
 //error comunications
 import { notify } from "../utils/Notify";
@@ -34,23 +35,26 @@ const LoginPage = () => {
 
         // Wywołanie API
         try {
-            const response = await axios.post('http://example.com/login', {
+            const response = await axios.post(URL_LOGIN, {
                 email,
                 password,
             });
             if (response.status === 200) {
                 notify(response.data);
             }
-            else {
-                notify(response.data.message);
-            }
+  
+  
             console.log(response.data);
             notify("Welcome");
             // Dodatkowe działania po pomyślnym zalogowaniu np. redirect na strone usera/admina/hr
 
         } catch (error) {
-            console.error('Błąd logowania', error);
-            // Obsługa błędów
+            if (axios.isAxiosError(error) && error.response) {
+                notify(error.response.data.message); // Wyświetlenie wiadomości o błędzie
+            } else {
+                console.error('Błąd logowania', error);
+                notify("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
+            }
         }
     };
 
