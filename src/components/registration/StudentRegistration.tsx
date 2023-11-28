@@ -51,7 +51,7 @@ const StudentRegistration = () => {
     const [expectedContractType, setExpectedContractType] = useState(0);
     const [expectedSalary, setExpectedSalary] = useState("");
     const [canTakeApprenticeship, setCanTakeApprenticeship] = useState("false");
-    const [monthsOfCommercialExp, setMonthsOfCommercialExp] = useState("");
+    const [monthsOfCommercialExp, setMonthsOfCommercialExp] = useState(0);
     const [education, setEducation] = useState("");
     const [workExperience, setWorkExperience] = useState("");
     const [courses, setCourses] = useState("");
@@ -64,22 +64,37 @@ const StudentRegistration = () => {
         if (!validateEmail(email)) {
             notify("Niepoprawny email. Wpisz poprawny adres!");
             console.error('Incorrect email.');
-            return;
         }
-        //Walidacja numeru tel
-        if (!validatePhone(phone)) {
+
+        else if (!validatePhone(phone)) {
             notify("Niepoprawny numer telefonu");
             console.error('Incorrect phone number.');
-            return;
+
         }
+         //Walidacja URL portfolio
+         if (!validatePortfolioUrls(portfolioUrls)) {
+            notify("Niepoprawny url dla portfolio");
+            console.error('Incorrect portfolio URL.');
+        }
+
         //Walidacja github
         if (!validateGithub(github)) {
             notify("Niepoprawny numer user Github");
             console.error('Incorrect Github user.');
-            return;
+        }
+        //Walidacja miesiace doswiadczenia
+        if (!validatemonthsOfCommercialExp(monthsOfCommercialExp)) {
+            notify("Niepoprawna wartiść dla miesięcy");
+            console.error('Incorrect commercial experiecne.');
+        }
+        // Walidacja oczekiwane wynagrodzenie
+        if (!validateExpectedSalary(expectedSalary)) {
+            notify("Niepoprawny kwota oczekiwanego wynagrodzenia");
+            console.error('Incorrect salary amount.');
         }
 
     }
+
     // walidacja email
     const validateEmail = (email: string) => {
         const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
@@ -89,30 +104,60 @@ const StudentRegistration = () => {
     // walidacja phone-number
     const validatePhone = (phone: string) => {
         const pattern = /^[0-9]{3,45}$/;
-        return pattern.test(phone);
+        return (phone === "" || pattern.test(phone));
     };
 
     // walidacja github user
-    
+
     const validateGithub = async (github: string) => {
         try {
-             const response = await axios.get(`https://api.github.com/users/${github}`,  { validateStatus:  (status: number) => {
-        
-             return (status >= 200 && status < 300) || status == 404
-         } });
+            const response = await axios.get(`https://api.github.com/users/${github}`, {
+                validateStatus: (status: number) => {
+
+                    return (status >= 200 && status < 300) || status == 404
+                }
+            });
 
             if (response.status === 200) {
-                notify("ok");
+                console.log("Status 200");
+
             }
             else {
                 notify("Nie znaleziono użytkownika.");
             }
-    
+
         } catch (error) {
             console.error('Błąd logowania', error);
 
         }
+    }
+    // Walidacja url
+
+    const validatePortfolioUrls = (portfolioUrls: string) => {
+        let urls = portfolioUrls.split('\n')
+        const pattern = new RegExp('/(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+        return urls.every(x=>pattern.test(x));
     };
+
+    // Walidacja expected salary
+
+    const validateExpectedSalary = (expectedSalary: string) => {
+        const regex = /^\d{1,6}(?:\.\d{0,2})?$/;
+        return regex.test(expectedSalary);
+    };
+
+    // Walidacja monthsOfCommercialExp
+    const validatemonthsOfCommercialExp = (monthsOfCommercialExp: number) => {
+        if (monthsOfCommercialExp >= 0) {
+            console.log("Ilość msc podana poprawnie");
+            return true
+
+        } else {
+            notify("Liczba miesiecy nie może być <0")
+            return false
+        }
+    };
+
 
 
     return (
@@ -329,14 +374,14 @@ const StudentRegistration = () => {
                         margin="normal"
                         fullWidth
                         id="expectedSalary"
-                        label="Oczekiwane wynagrodzenie netto"
+                        label="Oczekiwane wynagrodzenie netto (PLN)"
                         name="expectedSalary"
                         autoComplete="expectedSalary"
                         autoFocus
                         value={expectedSalary}
                         onChange={(e) => setExpectedSalary(e.target.value)}
                     />
-                    <FormControlLabel required control={<Switch
+                    <FormControlLabel control={<Switch
                         name="canTakeApprenticeship"
                         value={canTakeApprenticeship}
                         onChange={(e) => setCanTakeApprenticeship(e.target.value)}
@@ -349,12 +394,14 @@ const StudentRegistration = () => {
                         required
                         fullWidth
                         id="monthsOfCommercialExp"
-                        label="Komercyjne doświadczenie w programowaniu"
+                        label="Komercyjne doświadczenie w programowaniu (w msc)"
                         name="monthsOfCommercialExp"
                         autoComplete="0"
                         autoFocus
+                        type='number'
+                        inputProps={{ min: 0 }}
                         value={monthsOfCommercialExp}
-                        onChange={(e) => setMonthsOfCommercialExp(e.target.value)}
+                        onChange={(e) => setMonthsOfCommercialExp(Number(e.target.value))}
                     />
                     <TextField
                         variant="filled"
