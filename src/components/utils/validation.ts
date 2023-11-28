@@ -4,7 +4,8 @@ import axios from 'axios';
     // Walidacja url
     export const validatePortfolioUrls = (portfolioUrls: string) => {
     let urls = portfolioUrls.split('\n')
-    const pattern = new RegExp('^(https?:\/\/)?([\w-]+\.)*[\w-]+\.[\w-]+(\/[\w- .\/?%&=]*)?$'); //poprawiona wersja - weryfikowalem na https://regexr.com/
+    const pattern = new RegExp('^(https?:\/\/)?([\\w-]+\\.)*[\\w-]+\\.[\\w-]+(\/[-\\w .\/?%&=]*)?$'); 
+     //poprawiona wersja - weryfikowalem na https://regexr.com/
     //const pattern = new RegExp('https?://([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w.-]*');
     return urls.every(x=>pattern.test(x));
     };

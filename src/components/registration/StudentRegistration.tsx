@@ -1,4 +1,3 @@
-
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,36 +7,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { FormControlLabel, MenuItem, Switch } from '@mui/material';
 import { Link } from 'react-router-dom';
-
-// frontend - backend logic
-import axios from 'axios';
 import { useState } from "react";
-
-//error comunications
 import { notify } from "../utils/Notify";
-
-
-
-const expectedTypeWorkEnum = [
-
-    "Brak preferencji",
-    "Na miejscu",
-    "Gotowość do przeprowadzki",
-    "Wyłącznie zdalnie",
-    "Hybrydowo",
-
-]
-
-const expectedContractTypeEnum = [
-    "Brak preferencji",
-    "Tylko UoP",
-    "Możliwe B2B",
-    "Możliwe UZ/UoD",
-
-]
+import { expectedTypeWorkEnum, expectedContractTypeEnum} from './enum'
+import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub} from '../utils/validation';
 
 const StudentRegistration = () => {
-
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [name, setName] = useState("");
@@ -66,7 +41,7 @@ const StudentRegistration = () => {
             console.error('Incorrect email.');
         }
 
-        else if (!validatePhone(phone)) {
+        if (!validatePhone(phone)) {
             notify("Niepoprawny numer telefonu");
             console.error('Incorrect phone number.');
 
@@ -93,71 +68,7 @@ const StudentRegistration = () => {
             console.error('Incorrect salary amount.');
         }
 
-    }
-
-    // walidacja email
-    const validateEmail = (email: string) => {
-        const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-        return regex.test(email);
-    };
-
-    // walidacja phone-number
-    const validatePhone = (phone: string) => {
-        const pattern = /^[0-9]{3,45}$/;
-        return (phone === "" || pattern.test(phone));
-    };
-
-    // walidacja github user
-
-    const validateGithub = async (github: string) => {
-        try {
-            const response = await axios.get(`https://api.github.com/users/${github}`, {
-                validateStatus: (status: number) => {
-
-                    return (status >= 200 && status < 300) || status == 404
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("Status 200");
-
-            }
-            else {
-                notify("Nie znaleziono użytkownika.");
-            }
-
-        } catch (error) {
-            console.error('Błąd logowania', error);
-
-        }
-    }
-    // Walidacja url
-
-    const validatePortfolioUrls = (portfolioUrls: string) => {
-        let urls = portfolioUrls.split('\n')
-        const pattern = new RegExp('/(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
-        return urls.every(x=>pattern.test(x));
-    };
-
-    // Walidacja expected salary
-
-    const validateExpectedSalary = (expectedSalary: string) => {
-        const regex = /^\d{1,6}(?:\.\d{0,2})?$/;
-        return regex.test(expectedSalary);
-    };
-
-    // Walidacja monthsOfCommercialExp
-    const validatemonthsOfCommercialExp = (monthsOfCommercialExp: number) => {
-        if (monthsOfCommercialExp >= 0) {
-            console.log("Ilość msc podana poprawnie");
-            return true
-
-        } else {
-            notify("Liczba miesiecy nie może być <0")
-            return false
-        }
-    };
-
+    }  
 
 
     return (
