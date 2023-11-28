@@ -1,4 +1,4 @@
-import { notify } from "../utils/Notify";
+import { notify } from "./Notify";
 import axios from 'axios';
 
     // Walidacja url
