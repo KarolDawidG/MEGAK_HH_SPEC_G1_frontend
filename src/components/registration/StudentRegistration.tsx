@@ -1,4 +1,3 @@
-
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -6,10 +5,71 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
-
+import { FormControlLabel, MenuItem, Switch } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { notify } from "../utils/Notify";
+import { expectedTypeWorkEnum, expectedContractTypeEnum} from './enum'
+import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub} from '../utils/validation';
 
 const StudentRegistration = () => {
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [name, setName] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [github, setGithub] = useState("");
+    const [portfolioUrls, setPortfolioUrls] = useState("");
+    const [projectUrls, setProjectUrls] = useState("");
+    const [bio, setBio] = useState("");
+    const [expectedTypeWork, setExpectedTypeWork] = useState(0);
+    const [targetWorkCity, setTargetWorkCity] = useState("");
+    const [expectedContractType, setExpectedContractType] = useState(0);
+    const [expectedSalary, setExpectedSalary] = useState("");
+    const [canTakeApprenticeship, setCanTakeApprenticeship] = useState("false");
+    const [monthsOfCommercialExp, setMonthsOfCommercialExp] = useState(0);
+    const [education, setEducation] = useState("");
+    const [workExperience, setWorkExperience] = useState("");
+    const [courses, setCourses] = useState("");
+
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        // Walidacja adresu e-mail
+        if (!validateEmail(email)) {
+            notify("Niepoprawny email. Wpisz poprawny adres!");
+            console.error('Incorrect email.');
+        }
+
+        if (!validatePhone(phone)) {
+            notify("Niepoprawny numer telefonu");
+            console.error('Incorrect phone number.');
+
+        }
+         //Walidacja URL portfolio
+         if (!validatePortfolioUrls(portfolioUrls)) {
+            notify("Niepoprawny url dla portfolio");
+            console.error('Incorrect portfolio URL.');
+        }
+
+        //Walidacja github
+        if (!validateGithub(github)) {
+            notify("Niepoprawny numer user Github");
+            console.error('Incorrect Github user.');
+        }
+        //Walidacja miesiace doswiadczenia
+        if (!validatemonthsOfCommercialExp(monthsOfCommercialExp)) {
+            notify("Niepoprawna wartiść dla miesięcy");
+            console.error('Incorrect commercial experiecne.');
+        }
+        // Walidacja oczekiwane wynagrodzenie
+        if (!validateExpectedSalary(expectedSalary)) {
+            notify("Niepoprawny kwota oczekiwanego wynagrodzenia");
+            console.error('Incorrect salary amount.');
+        }
+
+    }  
+
 
     return (
 
@@ -26,7 +86,7 @@ const StudentRegistration = () => {
 
                 <Typography component="h1" variant="h5">
                 </Typography>
-                <Box component="form" >
+                <Box component="form" onSubmit={handleSubmit}>
                     <TextField
                         variant="filled"
                         size="small"
@@ -38,6 +98,9 @@ const StudentRegistration = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+
                     />
 
                     <TextField
@@ -48,8 +111,11 @@ const StudentRegistration = () => {
                         id="phone"
                         label="Numer tel"
                         name="phone"
+                        type="tel"
                         autoComplete="phone"
                         autoFocus
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                     />
 
                     <TextField
@@ -63,6 +129,8 @@ const StudentRegistration = () => {
                         name="name"
                         autoComplete="name"
                         autoFocus
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
 
                     <TextField
@@ -76,6 +144,8 @@ const StudentRegistration = () => {
                         name="lastname"
                         autoComplete="lastname"
                         autoFocus
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
                     />
 
                     <TextField
@@ -89,6 +159,8 @@ const StudentRegistration = () => {
                         name="github"
                         autoComplete="github"
                         autoFocus
+                        value={github}
+                        onChange={(e) => setGithub(e.target.value)}
                     />
                     <TextField
                         variant="filled"
@@ -102,6 +174,9 @@ const StudentRegistration = () => {
                         autoFocus
                         multiline
                         minRows="3"
+                        type={'url'}
+                        value={portfolioUrls}
+                        onChange={(e) => setPortfolioUrls(e.target.value)}
                     />
 
                     <TextField
@@ -117,6 +192,9 @@ const StudentRegistration = () => {
                         autoFocus
                         multiline
                         minRows="3"
+                        type={'url'}
+                        value={projectUrls}
+                        onChange={(e) => setProjectUrls(e.target.value)}
                     />
 
                     <TextField
@@ -131,12 +209,14 @@ const StudentRegistration = () => {
                         autoFocus
                         multiline
                         minRows="3"
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
                     />
+
 
                     <TextField
                         variant="filled"
                         size="small"
-                        margin="normal"
                         required
                         fullWidth
                         id="expectedTypeWork"
@@ -144,7 +224,22 @@ const StudentRegistration = () => {
                         name="expectedTypeWork"
                         autoComplete="expectedTypeWork"
                         autoFocus
-                    />
+                        select
+                        defaultValue={0}
+                        value={expectedTypeWork}
+                        onChange={(e) => setExpectedTypeWork(Number(e.target.value))}
+
+
+                    >
+                        {
+                            expectedTypeWorkEnum.map((TypeWork, index) => {
+                                return <MenuItem key={TypeWork} value={index} > {TypeWork} </MenuItem>
+                            })
+                        }
+                    </TextField>
+
+
+
 
                     <TextField
                         variant="filled"
@@ -156,12 +251,13 @@ const StudentRegistration = () => {
                         name="targetWorkCity"
                         autoComplete="targetWorkCity"
                         autoFocus
+                        value={targetWorkCity}
+                        onChange={(e) => setTargetWorkCity(e.target.value)}
                     />
 
                     <TextField
                         variant="filled"
                         size="small"
-                        margin="normal"
                         required
                         fullWidth
                         id="expectedContractType"
@@ -169,30 +265,39 @@ const StudentRegistration = () => {
                         name="expectedContractType"
                         autoComplete="expectedContractType"
                         autoFocus
-                    />
+                        select
+                        defaultValue={0}
+                        value={expectedContractType}
+                        onChange={(e) => setExpectedContractType(Number(e.target.value))}
+                    >
+                        {
+                            expectedContractTypeEnum.map((TypeContract, index) => {
+                                return <MenuItem key={TypeContract} value={index} > {TypeContract} </MenuItem>
+                            })
+                        }
+                    </TextField>
+
+
+
                     <TextField
                         variant="filled"
                         size="small"
                         margin="normal"
                         fullWidth
                         id="expectedSalary"
-                        label="Oczekiwane wynagrodzenie netto"
+                        label="Oczekiwane wynagrodzenie netto (PLN)"
                         name="expectedSalary"
                         autoComplete="expectedSalary"
                         autoFocus
+                        value={expectedSalary}
+                        onChange={(e) => setExpectedSalary(e.target.value)}
                     />
-                    <TextField
-                        variant="filled"
-                        size="small"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="canTakeApprenticeship"
-                        label="Zgoda na odbycie bezpłatnych praktyk/stażu"
+                    <FormControlLabel control={<Switch
                         name="canTakeApprenticeship"
-                        autoComplete="canTakeApprenticeship"
-                        autoFocus
-                    />
+                        value={canTakeApprenticeship}
+                        onChange={(e) => setCanTakeApprenticeship(e.target.value)}
+                    />} label="Zgoda na odbycie bezpłatnych praktyk/stażu" />
+
                     <TextField
                         variant="filled"
                         size="small"
@@ -200,10 +305,14 @@ const StudentRegistration = () => {
                         required
                         fullWidth
                         id="monthsOfCommercialExp"
-                        label="Komercyjne doświadczenie w programowaniu"
+                        label="Komercyjne doświadczenie w programowaniu (w msc)"
                         name="monthsOfCommercialExp"
                         autoComplete="0"
                         autoFocus
+                        type='number'
+                        inputProps={{ min: 0 }}
+                        value={monthsOfCommercialExp}
+                        onChange={(e) => setMonthsOfCommercialExp(Number(e.target.value))}
                     />
                     <TextField
                         variant="filled"
@@ -215,6 +324,10 @@ const StudentRegistration = () => {
                         name="education"
                         autoComplete="education"
                         autoFocus
+                        multiline
+                        minRows="4"
+                        value={education}
+                        onChange={(e) => setEducation(e.target.value)}
                     />
                     <TextField
                         variant="filled"
@@ -228,6 +341,8 @@ const StudentRegistration = () => {
                         autoFocus
                         multiline
                         minRows="4"
+                        value={workExperience}
+                        onChange={(e) => setWorkExperience(e.target.value)}
                     />
                     <TextField
                         variant="filled"
@@ -241,6 +356,8 @@ const StudentRegistration = () => {
                         autoFocus
                         multiline
                         minRows="4"
+                        value={courses}
+                        onChange={(e) => setCourses(e.target.value)}
                     />
 
                     <Grid container rowSpacing={3}>
@@ -259,9 +376,9 @@ const StudentRegistration = () => {
 
                         </Grid>
 
-                        <Grid item xs={2}/>
+                        <Grid item xs={2} />
 
-                    
+
                         <Grid item xs={5} >
                             <Button
                                 type="submit"
@@ -272,16 +389,17 @@ const StudentRegistration = () => {
                             </Button>
 
                         </Grid>
-                    
-                        <Grid item xs={12}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                fullWidth
-                            >
-                                Zmień hasło
-                            </Button>
 
+                        <Grid item xs={12}>
+                            <Link to="/passwordchange">
+                                <Button
+
+                                    variant="contained"
+                                    fullWidth
+                                >
+                                    Zmień hasło
+                                </Button>
+                            </Link>
                         </Grid>
                     </Grid>
 
