@@ -7,10 +7,39 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
+import axios from 'axios';
+import { validateEmail } from '../utils/validation';
+import { notify } from '../utils/Notify';
+import { useState } from 'react';
+//import { URL_FORGOT_PASSWORD } from '../utils/backend-links';
 
 
 const ForgotPasswordPage = () => {
+    const [email, setEmail] = useState("");
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!validateEmail(email)) {
+            notify("Incorrect email. Please type correct data!");
+            console.error('Incorrect email.');
+            return;
+        }
+    
+        try {
+            const response = await axios.post('http://localhost:3001/user/change-password', {
+                email,
+            });
+            console.log(response.data);
+            notify("Jesli adres jest poprawny, link do resetowania hasla zostanie przeslany ma podany e-mail!");
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify(error.response.data.message); 
+            } else {
+                console.error('Błąd przypomnienia hasła', error);
+                notify("Wystąpił problem. Spróbuj ponownie.");
+            }
+        }
+    };
 
     return (
 
@@ -27,7 +56,7 @@ const ForgotPasswordPage = () => {
 
                 <Typography component="h1" variant="h5">
                 </Typography>
-                <Box component="form" >
+                <Box component="form" onSubmit={handleSubmit}>
                     <TextField
                         variant="filled"
                         size="small"
@@ -37,6 +66,8 @@ const ForgotPasswordPage = () => {
                         id="email"
                         label="E-mail "
                         name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         autoComplete="email"
                         autoFocus
 
@@ -47,7 +78,8 @@ const ForgotPasswordPage = () => {
 
                     <Grid container rowSpacing={2.5}>
                         <Grid item xs={12} >
-                            <Typography variant="body2" align="right" ><Link href="http://localhost:5173/login" variant="body2" underline="hover">
+                            <Typography variant="body2" align="right" >
+                            <Link href="http://localhost:5173/login" variant="body2" underline="hover">
                                 Zaloguj się
                             </Link></Typography>
 
