@@ -19,7 +19,7 @@ export const App = () => {
             <Route path='/' element={<LoginPage />} />
             <Route path='/passwordreset' element={<ForgotPasswordPage/>} />
             <Route path='/student_registration' element={<StudentRegistration/>} />
-            <Route path='/passwordchange' element={<PasswordChange/>}/>
+            <Route path='/passwordchange/:id/:token' element={<PasswordChange/>}/>
           </Routes>
         </BrowserRouter >
       </ThemeProvider>

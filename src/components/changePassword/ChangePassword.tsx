@@ -1,16 +1,50 @@
-
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {Link} from "react-router-dom";
-
-
+import axios from 'axios';
+import { notify } from '../utils/Notify';
+import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 
 const PasswordChange = () => {
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
+    const { id, token } = useParams();
+    const [passwordsMatch, setPasswordsMatch] = useState(false);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (password !== password2) {
+            notify('Hasła powinny byc takie same!');
+            return; 
+        }
+        try {
+            const response = await axios.post(`http://localhost:3001/user/new-password`, {
+                id,
+                token,
+                password
+              });
+            console.log(response.data.message);
+            notify("Haslo zmienione poprawnie!");
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify(error.response.data.message); 
+            } else {
+                console.error('Błąd przypomnienia hasła', error);
+                notify("Wystąpił problem. Spróbuj ponownie.");
+            }
+        }
+    };
+
+    useEffect(() =>{        //dopóki hasla nie sa takie same, button /Zmień hasło/ jest nieaktywny!
+        setPasswordsMatch(password === password2);
+    })
 
     return (
 
@@ -24,13 +58,13 @@ const PasswordChange = () => {
                 flexDirection='column'
             >
                 
-                <Link to="/" > 
+                <Link href="/" > 
                 <img src="/Megaklogo.png" alt="MegaK logo" height="75" ></img>
                 </Link>
                 <Typography component="h1" variant="h5">
                 
                 </Typography>
-                <Box component="form" >
+                <Box component="form" onSubmit={handleSubmit}>
                     <TextField
                         variant="filled"
                         margin="normal"
@@ -40,6 +74,8 @@ const PasswordChange = () => {
                         name="password"
                         label="Hasło"
                         type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         id="password"
                         autoComplete="current-password"
                     />
@@ -52,29 +88,17 @@ const PasswordChange = () => {
                         name="new-password"
                         label="Nowe hasło"
                         type="password"
+                        value={password2}
+                        onChange={(e) => setPassword2(e.target.value)}
                         id="new-password"
                         autoComplete="new-password"
                     />
 
-                    <TextField
-                        variant="filled"
-                        margin="normal"
-                        required
-                        fullWidth
-                        size="small"
-                        name="new-password-confirm"
-                        label="Potwierdź hasło"
-                        type="password"
-                        id="new-password-confirm"
-                        autoComplete="new-password-confirm"
-                    />
-
-
-
                     <Grid container rowSpacing={2.5}>
                         <Grid item xs={12} >
-                            <Typography variant="body2" align="right" ><Link href="http://localhost:5173/" variant="body2" underline="hover">
-
+                            <Typography variant="body2" align="right" >
+                            <Link href="http://localhost:5173" variant="body2" underline="hover">
+                                Menu główne
                             </Link></Typography>
 
                         </Grid>
@@ -83,6 +107,7 @@ const PasswordChange = () => {
                         <Grid item xs={12} >
                             <Button
                                 type="submit"
+                                disabled={!passwordsMatch}
                                 fullWidth
                                 variant="contained"
 
