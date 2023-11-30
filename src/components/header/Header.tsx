@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {URL_LOGOUT} from "../../utils/backend-links";
+import AuthContext from "../../context/AuthProvider";
 
 interface MenuOption {
     label: string;
@@ -17,7 +19,7 @@ interface MenuOption {
 };
 
 export const Header = () => {
-    const [user, setUser] = useState<string>('Marcin R');
+    const {auth, setAuth} = useContext(AuthContext);
     const [gitLogin, setGitLogin] = useState<string>('Swichu553')
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
@@ -38,12 +40,12 @@ export const Header = () => {
 
     const handleMenuItemClick = async (route: string) => {
         if (route === '/logout') {
-            try {
-                await axios.post('http://example.com/logout');
-            } catch (error) {
-                console.error('Błąd wylogowania', error);
-            }
-        };
+            await axios.get(URL_LOGOUT, {
+                withCredentials: true
+            }).then(() => {
+                setAuth(null);
+            })
+        }
         navigate(route);
     };
 
@@ -73,7 +75,7 @@ export const Header = () => {
                 <Box display="flex" alignItems="center">
                     <Avatar alt="User Avatar" src={linkAvatarUser()} />
                     <Typography variant="h6" component="div" margin={2} >
-                        {user}
+                        {auth.email}
                     </Typography>
 
                     <IconButton

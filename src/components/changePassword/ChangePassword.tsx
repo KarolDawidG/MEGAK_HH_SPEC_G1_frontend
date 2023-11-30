@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from 'axios';
-import { notify } from '../utils/Notify';
+import { notify } from '../../utils/Notify';
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 
@@ -72,7 +72,7 @@ const PasswordChange = () => {
                         fullWidth
                         size="small"
                         name="password"
-                        label="Hasło"
+                        label="Nowe hasło"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -86,7 +86,7 @@ const PasswordChange = () => {
                         fullWidth
                         size="small"
                         name="new-password"
-                        label="Nowe hasło"
+                        label="Powtórz hasło"
                         type="password"
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}

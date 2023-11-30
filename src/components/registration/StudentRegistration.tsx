@@ -8,9 +8,9 @@ import Container from '@mui/material/Container';
 import { FormControlLabel, MenuItem, Switch } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useState } from "react";
-import { notify } from "../utils/Notify";
+import { notify } from "../../utils/Notify";
 import { expectedTypeWorkEnum, expectedContractTypeEnum} from './enum'
-import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub} from '../utils/validation';
+import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub} from '../../utils/validation';
 
 const StudentRegistration = () => {
     const [email, setEmail] = useState("");

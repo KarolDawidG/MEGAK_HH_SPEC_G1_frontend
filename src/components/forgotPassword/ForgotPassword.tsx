@@ -8,8 +8,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from 'axios';
-import { validateEmail } from '../utils/validation';
-import { notify } from '../utils/Notify';
+import { validateEmail } from '../../utils/validation';
+import { notify } from '../../utils/Notify';
 import { useState } from 'react';
 //import { URL_FORGOT_PASSWORD } from '../utils/backend-links';
 

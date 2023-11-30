@@ -9,16 +9,18 @@ import Container from '@mui/material/Container';
 
 // frontend - backend logic
 import axios from 'axios';
-import {useState} from "react";
-import { URL_LOGIN } from '../utils/backend-links';
+import {useContext, useState} from "react";
+import { URL_LOGIN } from '../../utils/backend-links';
 
 //error comunications
-import { notify } from "../utils/Notify";
-import { validateEmail } from '../utils/validation';
+import { notify } from "../../utils/Notify";
+import { validateEmail } from '../../utils/validation';
+import AuthContext from "../../context/AuthProvider";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const {setAuth} = useContext(AuthContext);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -39,16 +41,11 @@ const LoginPage = () => {
             const response = await axios.post(URL_LOGIN, {
                 email,
                 password,
+            }, {
+                withCredentials: true
             });
-            if (response.status === 200) {
-                notify(response.data);
-            }
-  
-  
-            console.log(response.data);
             notify("Welcome");
-            // Dodatkowe działania po pomyślnym zalogowaniu np. redirect na strone usera/admina/hr
-
+            setAuth(response.data);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify(error.response.data.message); // Wyświetlenie wiadomości o błędzie

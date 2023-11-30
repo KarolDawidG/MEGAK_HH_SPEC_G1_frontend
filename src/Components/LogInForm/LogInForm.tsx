@@ -1,5 +1,5 @@
 import {FormEvent, useContext, useState} from "react";
-import AuthContext from "../../Context/AuthProvider.tsx";
+import AuthContext from "../../context/AuthProvider.tsx";
 
 export const LogInForm = () => {
 
@@ -19,6 +19,7 @@ export const LogInForm = () => {
             console.log(success) // <- tylko po to by webstorm nie podkreślał na czerwono zmiennej, która nie jest użyta
             console.log(userData);
             setSuccess(true);
+            setAuth()
             setUserData({
                 email: '',
                 password: ''
