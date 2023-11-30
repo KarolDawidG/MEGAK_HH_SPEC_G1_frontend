@@ -17,10 +17,10 @@ export const App = () => {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<LoginPage />} />
+            <Route path='/' element={<LoginPage />} /> {/* Done. */}
             <Route path='/passwordreset' element={<ForgotPasswordPage/>} />
             <Route path='/student_registration' element={<StudentRegistration/>} />
-            <Route path='/passwordchange' element={<PasswordChange/>}/>
+            <Route path='/passwordchange/:id/:token' element={<PasswordChange/>}/>{/* Done. */}
             <Route path='/admin' element={<Administrator/>}/>
           </Routes>
         </BrowserRouter >
