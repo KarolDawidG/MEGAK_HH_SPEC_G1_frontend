@@ -5,12 +5,16 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { FormControlLabel, MenuItem, Switch } from '@mui/material';
+import {  FormControlLabel, MenuItem, Switch } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useState } from "react";
 import { notify } from "../utils/Notify";
-import { expectedTypeWorkEnum, expectedContractTypeEnum} from './enum'
-import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub} from '../utils/validation';
+import { expectedTypeWorkEnum, expectedContractTypeEnum } from './enum'
+import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub } from '../utils/validation';
+import axios from 'axios';
+import { URL_ADD_STUDENT,} from '../utils/backend-links';
+import React from 'react';
+import DialogHiredAlert from './DialogHired';
 
 const StudentRegistration = () => {
     const [email, setEmail] = useState("");
@@ -30,7 +34,12 @@ const StudentRegistration = () => {
     const [education, setEducation] = useState("");
     const [workExperience, setWorkExperience] = useState("");
     const [courses, setCourses] = useState("");
+    
 
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -44,31 +53,66 @@ const StudentRegistration = () => {
         if (!validatePhone(phone)) {
             notify("Niepoprawny numer telefonu");
             console.error('Incorrect phone number.');
-
+            return
         }
-         //Walidacja URL portfolio
-         if (!validatePortfolioUrls(portfolioUrls)) {
+        //Walidacja URL portfolio
+        if (!validatePortfolioUrls(portfolioUrls)) {
             notify("Niepoprawny url dla portfolio");
             console.error('Incorrect portfolio URL.');
+            return
         }
 
         //Walidacja github
         if (!validateGithub(github)) {
             notify("Niepoprawny numer user Github");
             console.error('Incorrect Github user.');
+            return
         }
         //Walidacja miesiace doswiadczenia
         if (!validatemonthsOfCommercialExp(monthsOfCommercialExp)) {
             notify("Niepoprawna wartiść dla miesięcy");
             console.error('Incorrect commercial experiecne.');
+            return
         }
         // Walidacja oczekiwane wynagrodzenie
         if (!validateExpectedSalary(expectedSalary)) {
             notify("Niepoprawny kwota oczekiwanego wynagrodzenia");
             console.error('Incorrect salary amount.');
+            return
+        }
+        try {
+            const res = await axios.post(URL_ADD_STUDENT, {
+                email,
+                phone,
+                name,
+                lastname,
+                github,
+                portfolioUrls,
+                projectUrls,
+                bio,
+                expectedTypeWork,
+                targetWorkCity,
+                expectedContractType,
+                expectedSalary,
+                canTakeApprenticeship,
+                monthsOfCommercialExp,
+                education,
+                workExperience,
+                courses
+            });
+            if (res.status === 200) {
+                notify(res.data);
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify(error.response.data.message); // Wyświetlenie wiadomości o błędzie
+            } else {
+                console.error('Błąd danych', error);
+                notify("Wystąpił problem podczas dodawania danych.");
+            }
         }
 
-    }  
+    }
 
 
     return (
@@ -364,15 +408,13 @@ const StudentRegistration = () => {
 
                         <Grid item xs={5} >
                             <Button
-                                type="submit"
                                 variant="contained"
-                                onClick={() => {
-                                    alert('Czy chcesz kontynuować? Po wybraniu opcji "zatrudniony" utracisz dostęp do platformy.');
-                                }}
+                                onClick={handleClickOpen}
                                 fullWidth
                             >
                                 Zatrudniony
                             </Button>
+                            <DialogHiredAlert isOpen={open} setOpen={setOpen}/>
 
                         </Grid>
 
@@ -384,10 +426,11 @@ const StudentRegistration = () => {
                                 type="submit"
                                 variant="contained"
                                 fullWidth
+                                
                             >
                                 Zapisz
                             </Button>
-
+                            
                         </Grid>
 
                         <Grid item xs={12}>
