@@ -7,7 +7,7 @@ import axios from 'axios';
     const pattern = new RegExp('^(https?:\/\/)?([\\w-]+\\.)*[\\w-]+\\.[\\w-]+(\/[-\\w .\/?%&=]*)?$'); 
      //poprawiona wersja - weryfikowalem na https://regexr.com/
     //const pattern = new RegExp('https?://([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w.-]*');
-    return urls.every(x=>pattern.test(x));
+    return (portfolioUrls ==="" || urls.every(x=>pattern.test(x))); // dodana opcja - portfolio może być puste, dla projektu zaliczeniowe obsluguje to formularz ustawiony jako required.
     };
 
     // walidacja email
