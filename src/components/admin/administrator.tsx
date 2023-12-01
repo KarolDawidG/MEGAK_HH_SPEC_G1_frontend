@@ -44,6 +44,7 @@ const Administrator = () => {
         if (!validateEmail(email)) {
             notify("Niepoprawny email. Wpisz poprawny adres!");
             console.error('Incorrect email.');
+            return
         }
         try {
             const res = await axios.post(URL_ADD_HR, {
