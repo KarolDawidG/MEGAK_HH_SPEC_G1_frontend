@@ -7,6 +7,7 @@ import ForgotPasswordPage from "./components/forgotPassword/ForgotPassword";
 import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
 import { ToastContainer } from "react-toastify";
+import Administrator from "./components/admin/administrator";
 
 export const App = () => {
 
@@ -20,6 +21,7 @@ export const App = () => {
             <Route path='/passwordreset' element={<ForgotPasswordPage/>} />
             <Route path='/student_registration' element={<StudentRegistration/>} />
             <Route path='/passwordchange/:id/:token' element={<PasswordChange/>}/>{/* Done. */}
+            <Route path='/admin' element={<Administrator/>}/>
           </Routes>
         </BrowserRouter >
       </ThemeProvider>
