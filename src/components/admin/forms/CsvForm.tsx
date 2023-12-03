@@ -7,7 +7,7 @@
     import Papa from 'papaparse';
 
 
-    const CSVForm = () => {
+    export const CSVForm = () => {
     
         const handleOnChange = async (e: ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files[0]) {
@@ -106,5 +106,3 @@
         )
 
     }
-
-    export default CSVForm;

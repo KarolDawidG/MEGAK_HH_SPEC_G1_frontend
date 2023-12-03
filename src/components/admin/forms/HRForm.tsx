@@ -2,26 +2,37 @@
     import React, {  useState } from "react";
     import axios from 'axios';
     import { notify } from "../../utils/Notify";
-    //import { validateEmail } from "../../utils/validation";
+    import { validateEmail } from "../../utils/validation";
     import { URL_ADD_HR } from "../../utils/backend-links";
 
-    const HRForm = () => {
+    export const HRForm = () => {
         const [email, setEmail] = useState("");
         const [fullName, setFullName] = useState("");
         const [company, setCompany] = useState("");
         const [maxReservedStudents, setMaxReservedStudents] = useState("");
     
-        
             const handleOnSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 console.log('Wysyłanie danych formularza:', { email, fullName, company, maxReservedStudents });
             
-           
+                // Walidacja adresu e-mail
+            if (!validateEmail(email)) {
+                notify("Niepoprawny email. Wpisz poprawny adres!");
+                console.error('Incorrect email.');
+                return
+            }
+
                 try {
-                    console.log('Przed wysłaniem żądania do serwera');
-            
-                
-                    notify("Dane zostały wysłane pomyślnie.");
+                    const response = await axios.post(URL_ADD_HR, {
+                        email,
+                        fullName,
+                        company,
+                        maxReservedStudents
+                    });
+                    if(response.status === 200){
+                        notify("Dane zostały wysłane pomyślnie.");
+                    }
+                    
                 } catch (error) {
                     console.error('Błąd wysyłania danych:', error);
                     notify("Wystąpił błąd podczas wysyłania danych.");
@@ -31,13 +42,12 @@
             
 
         return (
-            <>
-                    
-                        <Typography component="h2" variant="h5" align="center" >
-                            Wprowadź dane pracownika HR
-                        </Typography>
-                        
-                        <Box component="form" onSubmit={handleOnSubmitForm}>
+            <> 
+                <Typography component="h2" variant="h5" align="center" >
+                    Wprowadź dane pracownika HR
+                </Typography>
+
+                    <Box component="form" onSubmit={handleOnSubmitForm}>
                         <TextField
                             variant="filled"
                             size="small"
@@ -97,7 +107,7 @@
                             value={maxReservedStudents}
                             onChange={(e) => setMaxReservedStudents(e.target.value)}
                         />
-                    </Box>
+                    
 
                     <Grid container rowSpacing={4}>
 
@@ -112,10 +122,8 @@
 
                         </Grid>
                     </Grid>
+
+                </Box>
             </>
-
         )
-
     }
-
-    export default HRForm;
