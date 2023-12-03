@@ -10,10 +10,17 @@
         const [fullName, setFullName] = useState("");
         const [company, setCompany] = useState("");
         const [maxReservedStudents, setMaxReservedStudents] = useState("");
+        const formData = {
+            email,
+            fullName,
+            company,
+            maxReservedStudents
+          };
+        const formDataJSON:string = JSON.stringify(formData);
+          
     
             const handleOnSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
-                console.log('Wysyłanie danych formularza:', { email, fullName, company, maxReservedStudents });
             
                 // Walidacja adresu e-mail
             if (!validateEmail(email)) {
@@ -23,14 +30,16 @@
             }
 
                 try {
-                    const response = await axios.post(URL_ADD_HR, {
-                        email,
-                        fullName,
-                        company,
-                        maxReservedStudents
-                    });
-                    if(response.status === 200){
-                        notify("Dane zostały wysłane pomyślnie.");
+                    console.log(formDataJSON);
+                    const response = await axios.post(URL_ADD_HR, formDataJSON, {
+                        headers: {
+                          'Content-Type': 'application/json'
+                        }
+                      });
+                    if (response.status === 200) {
+                        notify("Plik załadowany pomyślnie: " + response.data);
+                    } else {
+                        notify(`Błąd przy ładowaniu pliku: ${response.status} - ${response.statusText}`);
                     }
                     
                 } catch (error) {
