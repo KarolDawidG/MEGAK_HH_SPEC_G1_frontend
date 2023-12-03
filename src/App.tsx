@@ -7,13 +7,13 @@ import ForgotPasswordPage from "./components/forgotPassword/ForgotPassword";
 import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
 import { ToastContainer } from "react-toastify";
-import Administrator from "./components/admin/administrator";
+import {Administrator} from "./components/admin/Administrator";
 
 export const App = () => {
 
   return (
     <>
-       <ToastContainer limit={3} />
+      <ToastContainer limit={3} />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Routes>
