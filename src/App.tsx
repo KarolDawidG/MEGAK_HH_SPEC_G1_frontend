@@ -2,7 +2,7 @@
 import { ThemeProvider } from "@mui/material/styles";
 import LoginPage from "./components/login/LoginPage"
 import theme from "../styles/theme";
-import { BrowserRouter , Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ForgotPasswordPage from "./components/forgotPassword/ForgotPassword";
 import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
