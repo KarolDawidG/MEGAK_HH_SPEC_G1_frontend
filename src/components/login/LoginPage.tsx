@@ -13,7 +13,26 @@ import { URL_LOGIN } from '../utils/backend-links';
 import { notify } from "../utils/Notify";
 import { validateEmail } from '../utils/validation';
 
+interface UserInterface {
+    id: string;
+    pwdHash: string;
+    email: string;
+    isActive: boolean;
+    role: roleEnum;
+    createdAt: string;
+    registeredAt: string;
+    token: string;
+}
+
+enum roleEnum {
+    student = 0,
+    hr = 1,
+    admin = 2,
+}
+
 const LoginPage = () => {
+    const [auth, setAuth] = useState<UserInterface | null>(null);
+    const [token, setToken] =useState<string>("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const redirect = useNavigate();
@@ -33,9 +52,14 @@ const LoginPage = () => {
                 password,
             });
             if (response.status === 200) {
+                const authToken = response.data.token;
+                setToken(authToken); 
+
+                await fetchUserData(authToken);
                 notify(response.data);
+                console.log(auth)
             }
-  
+        
             if (response.data.role === 0){
                 redirect("/user-areczek");
                 notify("Welcome User");
@@ -60,7 +84,27 @@ const LoginPage = () => {
             }
         }
     };
-   
+
+    const fetchUserData = async (token:string) => {
+        try {
+            const res = await axios.get('http://localhost:3001/auth/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            });
+            setAuth(res.data);
+            console.log(`Dane fetchUserData: ${res.data}`);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify(`Error: ${error.response.data.message}`); // Wyświetlenie wiadomości o błędzie
+            } else {
+                console.error('Błąd logowania', error);
+                notify("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
+            }
+        }
+    }
+
 
     return (
 
