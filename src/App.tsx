@@ -7,7 +7,6 @@ import ForgotPasswordPage from "./components/forgotPassword/ForgotPassword";
 import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
 import { ToastContainer } from "react-toastify";
-import { MenuStudents } from "./components/students/menuStudents";
 
 export const App = () => {
 
@@ -21,7 +20,6 @@ export const App = () => {
             <Route path='/passwordreset' element={<ForgotPasswordPage />} />
             <Route path='/student_registration' element={<StudentRegistration />} />
             <Route path='/passwordchange' element={<PasswordChange />} />
-            <Route path='/menu' element={<MenuStudents />} />
           </Routes>
         </BrowserRouter >
       </ThemeProvider>
