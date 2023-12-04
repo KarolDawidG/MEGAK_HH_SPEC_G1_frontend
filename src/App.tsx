@@ -8,6 +8,7 @@ import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import Administrator from "./components/admin/administrator";
+import { MainHrView } from "./components/mainHrView/mainHrView";
 
 export const App = () => {
 
@@ -22,6 +23,8 @@ export const App = () => {
             <Route path='/student_registration' element={<StudentRegistration />} />
             <Route path='/passwordchange/:id/:token' element={<PasswordChange />} />{/* Done. */}
             <Route path='/admin' element={<Administrator />} />
+            <Route path='/hr' element={<MainHrView />} />
+
           </Routes>
         </BrowserRouter >
       </ThemeProvider>

@@ -49,4 +49,4 @@ export const validateGithub = async (github: string) => {
     } catch (error) {
         console.error('Błąd logowania', error);
     }
-},
+}

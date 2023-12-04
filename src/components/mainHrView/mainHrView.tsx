@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { SearchStudents } from '../searchPanel/SearchPanel';
 import { Header } from '../header/Header';
 import { AvailableStudents } from '../availableStudents/AvailableStudents';
+import { TalkToStudents } from '../talkToStudents/TalkToStudents';
 
 const students = [{
     id: 'daghahga',
@@ -84,7 +85,7 @@ export const MainHrView = () => {
             </Box>
             <SearchStudents />
             {selectedOption === 'students' && <AvailableStudents students={students} />}
-            {  /*{selectedOption === 'conversation' && <TalkToStudents students={students} />}*/}
+            {selectedOption === 'conversation' && <TalkToStudents students={students} />}
         </Container>
     );
 };
