@@ -1,14 +1,19 @@
     import { Box, Button, Typography } from "@mui/material"
     import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-    import { ChangeEvent } from "react";
+    import { ChangeEvent, useContext } from "react";
     import axios from 'axios';
     import { notify } from "../../utils/Notify";
     import { URL_IMPORT_USERS } from "../../utils/backend-links";
     import Papa from 'papaparse';
-
+    import { AuthContext } from "../../../AuthContext";
 
     export const CSVForm = () => {
-    
+        const authContext = useContext(AuthContext);
+            if (!authContext) {
+                return <div>Loading...</div>;
+            }
+        const { auth } = authContext;
+
         const handleOnChange = async (e: ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files[0]) {
                 const file = e.target.files[0];
@@ -64,7 +69,8 @@
                 const response = await axios.post(URL_IMPORT_USERS, jsonData, {
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    withCredentials: true
                 });
 
                 if (response.status === 200) {

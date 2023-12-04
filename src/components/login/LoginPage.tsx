@@ -8,10 +8,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import {useState} from "react";
+import {useState, useContext, useEffect } from "react";
 import { URL_LOGIN } from '../utils/backend-links';
 import { notify } from "../utils/Notify";
 import { validateEmail } from '../utils/validation';
+import { AuthContext } from '../../AuthContext';
 
 interface UserInterface {
     id: string;
@@ -31,8 +32,12 @@ enum roleEnum {
 }
 
 const LoginPage = () => {
-    const [auth, setAuth] = useState<UserInterface | null>(null);
-    const [token, setToken] =useState<string>("");
+    const authContext = useContext(AuthContext);
+        if (!authContext) {
+            return <div>Loading...</div>; // test
+        }
+
+    const { setAuth } = authContext;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const redirect = useNavigate();
@@ -50,14 +55,15 @@ const LoginPage = () => {
             const response = await axios.post(URL_LOGIN, {
                 email,
                 password,
+            }, {
+                withCredentials: true
             });
-            if (response.status === 200) {
-                const authToken = response.data.token;
-                setToken(authToken); 
 
-                await fetchUserData(authToken);
+            if (response.status === 200) {
+                setAuth(response.data);
+                await fetchUserData();
                 notify(response.data);
-                console.log(auth)
+                
             }
         
             if (response.data.role === 0){
@@ -85,12 +91,9 @@ const LoginPage = () => {
         }
     };
 
-    const fetchUserData = async (token:string) => {
+    const fetchUserData = async () => {
         try {
             const res = await axios.get('http://localhost:3001/auth/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
                 withCredentials: true
             });
             setAuth(res.data);
@@ -105,6 +108,12 @@ const LoginPage = () => {
         }
     }
 
+    useEffect(() => {
+        if (authContext?.auth) {
+            console.log('Zaktualizowano auth:', authContext.auth);
+        }
+    }, [authContext?.auth]);
+    
 
     return (
 

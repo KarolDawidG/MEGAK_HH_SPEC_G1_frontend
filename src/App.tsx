@@ -8,11 +8,12 @@ import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import {Administrator} from "./components/admin/administrator";
+import {AuthProvider} from './AuthContext';
 
 export const App = () => {
 
   return (
-    <>
+    <AuthProvider>
       <ToastContainer limit={3} />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
@@ -27,7 +28,7 @@ export const App = () => {
         </BrowserRouter >
       </ThemeProvider>
 
-    </>
+    </AuthProvider>
   )
 }
 
