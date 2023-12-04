@@ -34,8 +34,10 @@
                     const response = await axios.post(URL_ADD_HR, formDataJSON, {
                         headers: {
                           'Content-Type': 'application/json'
-                        }
+                        },
+                        withCredentials: true
                       });
+                      
                     if (response.status === 200) {
                         notify("Plik załadowany pomyślnie: " + response.data);
                     } else {
