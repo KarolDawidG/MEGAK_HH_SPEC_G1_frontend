@@ -8,7 +8,8 @@ import StudentRegistration from "./components/registration/StudentRegistration";
 import PasswordChange from "./components/changePassword/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import Administrator from "./components/admin/administrator";
-import { MainHrView } from "./components/mainHrView/mainHrView";
+import { MainHrView } from "./components/hr/mainHrView/mainHrView";
+import { Header } from "./components/header/Header";
 
 export const App = () => {
 
@@ -17,6 +18,7 @@ export const App = () => {
       <ToastContainer limit={3} />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+        <Header/>
           <Routes>
             <Route path='/' element={<LoginPage />} /> {/* Done. */}
             <Route path='/passwordreset' element={<ForgotPasswordPage />} />

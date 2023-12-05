@@ -7,7 +7,7 @@ import { Container, styled } from '@mui/material'
 const StyledGridItem = styled(Grid)(({ theme }) => ({
     backgroundColor: '#232324',
     padding: theme.spacing(2),
-    margin: theme.spacing(1),
+    marginRight: theme.spacing(0.1),
     height: '150px',
     width: 'auto',
 }));
@@ -30,17 +30,18 @@ export interface StudentDetailsProps {
 }
 
 export const StudentDetails: React.FC<{ obj: StudentDetailsProps }> = ({ obj }) => (
-    <Container component="main" maxWidth="xl" >
         <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
+           
+            
         >
-            <StyledGridItem item xs={12}>
-                <Typography>{`Ocena przejścia kursu:`}</Typography>
+            <StyledGridItem item xs={12}  >
+                <Typography >{`Ocena przejścia kursu:`}</Typography>
                 <Typography>{obj.courseCompletionRating}</Typography>
             </StyledGridItem >
-            <StyledGridItem item xs={12}>
+            <StyledGridItem item xs={12}  >
                 <Typography>{`Ocena aktywności i zaangażowania:`}</Typography>
                 <Typography>{obj.engagementRating}</Typography>
             </StyledGridItem >
@@ -78,5 +79,4 @@ export const StudentDetails: React.FC<{ obj: StudentDetailsProps }> = ({ obj }) 
             </StyledGridItem >
         </Box>
 
-    </Container>
 );

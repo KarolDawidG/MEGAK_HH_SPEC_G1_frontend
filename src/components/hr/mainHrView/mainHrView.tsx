@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { SearchStudents } from '../searchPanel/SearchPanel';
-import { Header } from '../header/Header';
 import { AvailableStudents } from '../availableStudents/AvailableStudents';
 import { TalkToStudents } from '../talkToStudents/TalkToStudents';
 
@@ -44,9 +43,8 @@ export const MainHrView = () => {
     return (
         <Container component="main" maxWidth="xl">
             <CssBaseline />
-            <Box>
-                <Header />
-            </Box>
+            <Box 
+                bgcolor={'#292A2B'}>
             <Box
                 display="flex"
                 justifyContent="space-between"
@@ -61,7 +59,7 @@ export const MainHrView = () => {
                             cursor: 'pointer',
                             borderBottom: selectedOption === 'students' ? '2px solid red' : 'none',
                             padding: '0 0 8px',
-                            color: selectedOption === 'students' ? 'white' : '#d2c1b3',
+                            color: selectedOption === 'students' ? 'white' : '#CFCFCF',
                         }}
                         onClick={() => setSelectedOption('students')}
                     >
@@ -75,7 +73,8 @@ export const MainHrView = () => {
                             cursor: 'pointer',
                             borderBottom: selectedOption === 'conversation' ? '2px solid red' : 'none',
                             padding: '0 0 8px',
-                            color: selectedOption === 'conversation' ? 'white' : '#d2c1b3',
+                            color: selectedOption === 'conversation' ? 'white' : '#CFCFCF',
+                            
                         }}
                         onClick={() => setSelectedOption('conversation')}
                     >
@@ -86,6 +85,7 @@ export const MainHrView = () => {
             <SearchStudents />
             {selectedOption === 'students' && <AvailableStudents students={students} />}
             {selectedOption === 'conversation' && <TalkToStudents students={students} />}
+            </Box>
         </Container>
     );
 };

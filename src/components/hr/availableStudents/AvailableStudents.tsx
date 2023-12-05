@@ -50,17 +50,19 @@ export const AvailableStudents: React.FC<AvailableStudentsComponentProps> = ({ s
         <>
             {students.map((student) => (
                 <Box
+                marginLeft={3} marginRight={3}
+                borderBottom={10} borderColor={'#1E1E1F'}>
+                <Box
                     key={student.id}
                     border={0}
                     padding={2}
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
-                    borderBottom={5}
                 >
                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
                         <Box>
-                            <Typography variant="h6">{`${student.firstName} ${student.lastName}`}</Typography>
+                            <Typography>{`${student.firstName} ${student.lastName}`}</Typography>
                         </Box>
                         <Box display="flex" gap={1}>
                             <Button variant="contained" color="primary" onClick={() => handleReserveClick(student)}>
@@ -70,7 +72,9 @@ export const AvailableStudents: React.FC<AvailableStudentsComponentProps> = ({ s
                                 {showDetails && selectedStudent?.id === student.id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             </IconButton>
                         </Box>
-                    </Box>
+                </Box>
+                
+                </Box>
                     {showDetails && selectedStudent?.id === student.id && <StudentDetails obj={selectedStudent} />}
                 </Box>
             ))}

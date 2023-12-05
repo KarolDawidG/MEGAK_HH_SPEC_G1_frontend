@@ -8,7 +8,8 @@ const theme = createTheme({
       default: '#222224',
     },
     primary: {
-      main: '#E02735'
+      main: '#E02735',
+
 
     },
 
@@ -43,10 +44,18 @@ const theme = createTheme({
             borderRadius: 0
           })
       }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          borderRadius: 0,
+          borderWidth:0,
+        }
+
+      }
     }
   }
 }
-
 );
 
 export default theme;
