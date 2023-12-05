@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { URL_LOGOUT } from '../utils/backend-links';
 
 interface MenuOption {
     label: string;
@@ -24,8 +25,8 @@ export const Header = () => {
 
 
     const menuOptions: MenuOption[] = [
-        { label: 'Zmień hasło', route: '/changepassword' },
-        { label: 'Wyloguj', route: '/logout' },
+        { label: 'Zmień hasło', route: `/passwordchange/${id}/${token}` },
+        { label: 'Wyloguj', route: '/' },
     ];
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -39,7 +40,7 @@ export const Header = () => {
     const handleMenuItemClick = async (route: string) => {
         if (route === '/logout') {
             try {
-                await axios.post('http://example.com/logout');
+                await axios.post(URL_LOGOUT);
             } catch (error) {
                 console.error('Błąd wylogowania', error);
             }
@@ -67,7 +68,10 @@ export const Header = () => {
                 paddingY={2}
             >
                 <Box component='image'>
+                    <Link to="/" >
                     <img src="/Megaklogo.png" alt="MegaK logo" height="50" />
+                    </Link>
+                    
                 </Box>
 
                 <Box display="flex" alignItems="center">
