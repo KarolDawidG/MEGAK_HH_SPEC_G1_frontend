@@ -14,22 +14,6 @@ import { notify } from "../utils/Notify";
 import { validateEmail } from '../utils/validation';
 import { AuthContext } from '../../AuthContext';
 
-interface UserInterface {
-    id: string;
-    pwdHash: string;
-    email: string;
-    isActive: boolean;
-    role: roleEnum;
-    createdAt: string;
-    registeredAt: string;
-    token: string;
-}
-
-enum roleEnum {
-    student = 0,
-    hr = 1,
-    admin = 2,
-}
 
 const LoginPage = () => {
     const authContext = useContext(AuthContext);
@@ -65,6 +49,9 @@ const LoginPage = () => {
                 notify(response.data);
                 
             }
+            
+                
+    
         
             if (response.data.role === 0){
                 redirect("/user-areczek");

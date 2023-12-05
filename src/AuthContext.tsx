@@ -1,10 +1,10 @@
-import React, { createContext, useState, FC, ReactElement, ReactNode  } from 'react';
+import React, { createContext, useState, FC, ReactNode  } from 'react';
 
 interface AuthContextType {
     auth: UserInterface | null;
     setAuth: React.Dispatch<React.SetStateAction<UserInterface | null>>;
 }
-
+// to na razie wersja robocza !!!
 interface UserInterface {
     id: string;
     pwdHash: string;

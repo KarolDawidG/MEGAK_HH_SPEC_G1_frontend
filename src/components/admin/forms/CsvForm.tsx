@@ -26,7 +26,7 @@
                         const fileContent = reader.result as string;
         
                         console.log("Zawartość pliku:", fileContent);
-        
+                        console.log(`Autentykacja: ${auth?.id}`) // context dziala dziala poprawnie
                         try {
                             const jsonData = await processCsvData(fileContent);
                             await sendCsvDataToServer(jsonData);
