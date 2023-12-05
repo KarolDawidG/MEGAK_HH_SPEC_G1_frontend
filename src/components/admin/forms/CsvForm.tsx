@@ -26,9 +26,9 @@
                         const fileContent = reader.result as string;
         
                         console.log("Zawartość pliku:", fileContent);
-                        console.log(`Autentykacja: ${auth?.id}`) // context dziala dziala poprawnie
+                        console.log(`Autentykacja: ${auth?.id}`) 
                         try {
-                            const jsonData = await processCsvData(fileContent);
+                            const jsonData:any = await processCsvData(fileContent);
                             await sendCsvDataToServer(jsonData);
                         } catch (error) {
                             notify("Błąd przetwarzania pliku CSV: " + error);
@@ -64,7 +64,7 @@
             });
         };
         
-        const sendCsvDataToServer = async (jsonData) => {
+        const sendCsvDataToServer = async (jsonData: string) => {
             try {
                 const response = await axios.post(URL_IMPORT_USERS, {jsonData: JSON.stringify(jsonData)}, {
                     headers: {
@@ -74,7 +74,7 @@
                 });
 
                 if (response.status === 201) {
-                    notify("Plik załadowany pomyślnie: " + response.data);
+                    notify("Plik załadowany pomyślnie.");
                     console.log(response);
                 } else {
                     notify(`Błąd przy ładowaniu pliku: ${response.status} - ${response.statusText}`);
