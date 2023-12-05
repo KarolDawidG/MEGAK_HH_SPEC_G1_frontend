@@ -7,3 +7,5 @@ export const URL_CHANGE_PASSWORD = 'http://localhost:3001/user/new-password';
 export const URL_IMPORT_USERS ='http://localhost:3001/user/import';
 
 export const URL_ADD_HR = 'http://localhost:3001/user/add-hr';
+
+export const URL_LOGOUT = 'http://localhost:3001/auth/logout';
