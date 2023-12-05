@@ -64,17 +64,18 @@
             });
         };
         
-        const sendCsvDataToServer = async ({jsonData}:any) => {
+        const sendCsvDataToServer = async (jsonData) => {
             try {
-                const response = await axios.post(URL_IMPORT_USERS, jsonData, {
+                const response = await axios.post(URL_IMPORT_USERS, {jsonData: JSON.stringify(jsonData)}, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     withCredentials: true
                 });
 
-                if (response.status === 200) {
+                if (response.status === 201) {
                     notify("Plik załadowany pomyślnie: " + response.data);
+                    console.log(response);
                 } else {
                     notify(`Błąd przy ładowaniu pliku: ${response.status} - ${response.statusText}`);
                 }
