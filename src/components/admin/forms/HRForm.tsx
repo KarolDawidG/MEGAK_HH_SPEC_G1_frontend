@@ -10,13 +10,16 @@
         const [fullName, setFullName] = useState("");
         const [company, setCompany] = useState("");
         const [maxReservedStudents, setMaxReservedStudents] = useState("");
+
+       
         const formData = {
             email,
             fullName,
             company,
-            maxReservedStudents
-          };
-        const formDataJSON:string = JSON.stringify(formData);
+            maxReservedStudents: parseInt(maxReservedStudents, 10)
+    };
+
+        const formDataJSON:any = JSON.stringify(formData);
           
     
             const handleOnSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,10 +37,12 @@
                     const response = await axios.post(URL_ADD_HR, formDataJSON, {
                         headers: {
                           'Content-Type': 'application/json'
-                        }
+                        },
+                        withCredentials: true
                       });
-                    if (response.status === 200) {
-                        notify("Plik załadowany pomyślnie: " + response.data);
+
+                    if (response.status === 201) {
+                        notify("Dane pracownika HR zostały dodane.");
                     } else {
                         notify(`Błąd przy ładowaniu pliku: ${response.status} - ${response.statusText}`);
                     }

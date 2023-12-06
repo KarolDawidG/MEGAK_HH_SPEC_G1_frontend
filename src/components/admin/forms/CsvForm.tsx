@@ -1,14 +1,19 @@
     import { Box, Button, Typography } from "@mui/material"
     import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-    import { ChangeEvent } from "react";
+    import { ChangeEvent, useContext } from "react";
     import axios from 'axios';
     import { notify } from "../../utils/Notify";
     import { URL_IMPORT_USERS } from "../../utils/backend-links";
     import Papa from 'papaparse';
-
+    import { AuthContext } from "../../../AuthContext";
 
     export const CSVForm = () => {
-    
+        const authContext = useContext(AuthContext);
+            if (!authContext) {
+                return <div>Loading...</div>;
+            }
+        const { auth } = authContext;
+
         const handleOnChange = async (e: ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files[0]) {
                 const file = e.target.files[0];
@@ -21,9 +26,9 @@
                         const fileContent = reader.result as string;
         
                         console.log("Zawartość pliku:", fileContent);
-        
+                        console.log(`Autentykacja: ${auth?.id}`) 
                         try {
-                            const jsonData = await processCsvData(fileContent);
+                            const jsonData:any = await processCsvData(fileContent);
                             await sendCsvDataToServer(jsonData);
                         } catch (error) {
                             notify("Błąd przetwarzania pliku CSV: " + error);
@@ -59,16 +64,18 @@
             });
         };
         
-        const sendCsvDataToServer = async ({jsonData}:any) => {
+        const sendCsvDataToServer = async (jsonData: string) => {
             try {
-                const response = await axios.post(URL_IMPORT_USERS, jsonData, {
+                const response = await axios.post(URL_IMPORT_USERS, {jsonData: JSON.stringify(jsonData)}, {
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    withCredentials: true
                 });
 
-                if (response.status === 200) {
-                    notify("Plik załadowany pomyślnie: " + response.data);
+                if (response.status === 201) {
+                    notify("Plik załadowany pomyślnie.");
+                    console.log(response);
                 } else {
                     notify(`Błąd przy ładowaniu pliku: ${response.status} - ${response.statusText}`);
                 }

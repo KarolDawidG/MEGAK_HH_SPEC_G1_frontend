@@ -6,48 +6,67 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
-// frontend - backend logic
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import {useState} from "react";
+import {useState, useContext, useEffect } from "react";
 import { URL_LOGIN } from '../utils/backend-links';
-
-//error comunications
 import { notify } from "../utils/Notify";
 import { validateEmail } from '../utils/validation';
+import { AuthContext } from '../../AuthContext';
+
 
 const LoginPage = () => {
+    const authContext = useContext(AuthContext);
+        if (!authContext) {
+            return <div>Loading...</div>; // test
+        }
+
+    const { setAuth } = authContext;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const redirect = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        // Walidacja adresu e-mail
         if (!validateEmail(email)) {
             notify("Incorrect email. Please type correct data!");
             console.error('Incorrect email.');
             return;
         }
 
-        // Logowanie danych formularza
-        console.log(`Email: ${email} | Password: ${password}`);
-
-
-        // Wywołanie API
         try {
             const response = await axios.post(URL_LOGIN, {
                 email,
                 password,
+            }, {
+                withCredentials: true
             });
+
             if (response.status === 200) {
+                setAuth(response.data);
+                await fetchUserData();
                 notify(response.data);
+                
             }
-  
-  
-            console.log(response.data);
-            notify("Welcome");
-            // Dodatkowe działania po pomyślnym zalogowaniu np. redirect na strone usera/admina/hr
+            
+                
+    
+        
+            if (response.data.role === 0){
+                redirect("/user-areczek");
+                notify("Welcome User");
+            }
+            if (response.data.role === 1){
+                redirect("/hr-anetka");
+                notify("Welcome HR");
+            }
+            if (response.data.role === 2){
+                redirect("/admin");
+                notify("Welcome root");
+            }
+            
+            
 
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -58,7 +77,30 @@ const LoginPage = () => {
             }
         }
     };
-   
+
+    const fetchUserData = async () => {
+        try {
+            const res = await axios.get('http://localhost:3001/auth/user', {
+                withCredentials: true
+            });
+            setAuth(res.data);
+            console.log(`Dane fetchUserData: ${res.data}`);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                notify(`Error: ${error.response.data.message}`); // Wyświetlenie wiadomości o błędzie
+            } else {
+                console.error('Błąd logowania', error);
+                notify("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (authContext?.auth) {
+            console.log('Zaktualizowano auth:', authContext.auth);
+        }
+    }, [authContext?.auth]);
+    
 
     return (
 
