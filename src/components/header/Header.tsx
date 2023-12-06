@@ -25,7 +25,7 @@ export const Header = () => {
 
 
     const menuOptions: MenuOption[] = [
-        { label: 'Zmień hasło', route: `/passwordchange/${id}/${token}` },
+        { label: 'Zmień hasło', route: `/passwordreset` },
         { label: 'Wyloguj', route: '/' },
     ];
 
