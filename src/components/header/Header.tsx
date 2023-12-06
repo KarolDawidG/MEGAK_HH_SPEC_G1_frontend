@@ -52,6 +52,7 @@ export const Header = () => {
             };
         };
         navigate(route);
+        notify('Wylogowany');
     };
 
     // Użyj hooka useAvatarEffect
