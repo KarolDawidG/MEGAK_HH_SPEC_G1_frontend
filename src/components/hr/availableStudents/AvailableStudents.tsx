@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { StudentDetails, StudentDetailsProps } from '../studentDetails/StudentDetails';
+import axios from 'axios';
+import { URL_AVAILABLE_STUDENTS } from '../../utils/backend-links';
+import { StudentInterface } from '../../../types/StudentInterface';
+import { Container, MenuItem, Select } from '@mui/material';
+
 
 export type AvailableStudentsProps = {
     id: string;
@@ -13,17 +20,44 @@ export type AvailableStudentsProps = {
     lastName: string;
 };
 
-type AvailableStudentsComponentProps = {
-    students: AvailableStudentsProps[];
-};
 
-export const AvailableStudents: React.FC<AvailableStudentsComponentProps> = ({ students }) => {
+export const AvailableStudents = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<StudentDetailsProps | null>(null);
+    const [students, setStudents] = useState<StudentInterface[]>([]);
+    const [quantityStudents, setQuantityStudents] = useState<number | null>(0);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+    const [allPage, setAllPage] = useState<number>(0);
 
-    const handleReserveClick = (student: AvailableStudentsProps) => {
-        // Logika obsługi rezerwacji rozmowy
-        console.log(`Reserved conversation for ${student.firstName} ${student.lastName}`);
+    useEffect(() => {
+        const fetchAvailableStudents = async () => {
+            try {
+                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${itemsPerPage}`);
+                if (response.status !== 200) {
+                    throw new Error('Nie udało się pobrać danych');
+                }
+                setStudents(response.data[0]);
+                setQuantityStudents(response.data[1]);
+            } catch (error) {
+                console.error('Błąd podczas pobierania danych:', error);
+            }
+        };
+
+        fetchAvailableStudents();
+    }, [itemsPerPage]);
+
+    const handleReserveClick = (student: StudentInterface) => {
+        // Logika rezerwacji rozmowy
+    };
+
+    const handleItemsPerPageChange = (event: React.ChangeEvent<{ value: number }>) => {
+        setItemsPerPage(event.target.value);
+        setAllPage(quantityStudents ? quantityStudents / (event.target.value) : 0);
+    };
+
+    const handlePageChange = (newPage: number) => {
+        // Dodaj logikę do pobierania nowych rekordów z API dla nowej strony
+        setItemsPerPage(newPage);
     };
 
     const handleToggleDetails = (student: AvailableStudentsProps) => {
@@ -46,14 +80,16 @@ export const AvailableStudents: React.FC<AvailableStudentsComponentProps> = ({ s
         setShowDetails(!showDetails);
     };
 
+
     return (
-        <>
+        <Container component="main" maxWidth="xl">
             {students.map((student) => (
                 <Box
+                    key={student.id}
                     marginLeft={3} marginRight={3}
-                    borderBottom={10} borderColor={'#1E1E1F'}>
+                    borderBottom={10} borderColor={'#1E1E1F'}
+                >
                     <Box
-                        key={student.id}
                         border={0}
                         padding={2}
                         display="flex"
@@ -73,11 +109,27 @@ export const AvailableStudents: React.FC<AvailableStudentsComponentProps> = ({ s
                                 </IconButton>
                             </Box>
                         </Box>
-
                     </Box>
                     {showDetails && selectedStudent?.id === student.id && <StudentDetails obj={selectedStudent} />}
                 </Box>
             ))}
-        </>
+            <Box display="flex" alignItems="center" justifyContent="flex-end" width="100%" marginTop={2}>
+                <Typography sx={{ marginRight: 2 }}>Ilość elementów:</Typography>
+                <Select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                    {[10, 20, 30, 40, 50].map((value) => (
+                        <MenuItem key={value} value={value}>
+                            {value}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <Typography sx={{ marginRight: 2 }}>{`${itemsPerPage} z ${allPage}`}</Typography>
+                <IconButton onClick={() => handlePageChange(itemsPerPage - 10)} disabled={itemsPerPage === 1}>
+                    <KeyboardArrowLeftIcon />
+                </IconButton>
+                <IconButton onClick={() => handlePageChange(itemsPerPage + 10)}>
+                    <KeyboardArrowRightIcon />
+                </IconButton>
+            </Box>
+        </Container>
     );
 };

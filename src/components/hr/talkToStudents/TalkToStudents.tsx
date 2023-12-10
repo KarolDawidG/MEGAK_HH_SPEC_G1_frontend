@@ -14,11 +14,8 @@ export type AvailableStudentsProps = {
     lastName: string;
 };
 
-type AvailableStudentsComponentProps = {
-    students: AvailableStudentsProps[];
-};
 
-export const TalkToStudents: React.FC<AvailableStudentsComponentProps> = ({ students }) => {
+export const TalkToStudents = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<StudentDetailsProps | null>(null);
     const [showCV, setShowCV] = useState(false);
