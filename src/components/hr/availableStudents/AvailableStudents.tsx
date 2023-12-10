@@ -13,14 +13,6 @@ import { URL_AVAILABLE_STUDENTS } from '../../utils/backend-links';
 import { StudentInterface } from '../../../types/StudentInterface';
 import { Container, MenuItem, Select } from '@mui/material';
 
-
-export type AvailableStudentsProps = {
-    id: string;
-    firstName: string;
-    lastName: string;
-};
-
-
 export const AvailableStudents = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<StudentDetailsProps | null>(null);
@@ -56,7 +48,7 @@ export const AvailableStudents = () => {
     };
 
     const handlePageChange = (newPage: number) => {
-        // Dodaj logikę do pobierania nowych rekordów z API dla nowej strony
+        // Logika do pobierania nowych rekordów z API dla nowej strony
         setItemsPerPage(newPage);
     };
 
