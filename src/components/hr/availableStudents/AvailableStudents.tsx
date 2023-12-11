@@ -7,15 +7,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { StudentDetails, StudentDetailsProps } from '../studentDetails/StudentDetails';
+import { StudentDetails } from '../studentDetails/StudentDetails';
 import axios from 'axios';
 import { URL_AVAILABLE_STUDENTS } from '../../utils/backend-links';
-import { StudentInterface } from '../../../types/StudentInterface';
+import { StudentInterface, StudentInterfaceMain } from '../../../types/StudentInterface';
 import { Container, MenuItem, Select } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
+
 
 export const AvailableStudents = () => {
-    const [showDetails, setShowDetails] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState<StudentDetailsProps | null>(null);
+    const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
     const [students, setStudents] = useState<StudentInterface[]>([]);
     const [quantityStudents, setQuantityStudents] = useState<number | null>(0);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
@@ -24,7 +25,7 @@ export const AvailableStudents = () => {
     useEffect(() => {
         const fetchAvailableStudents = async () => {
             try {
-                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${itemsPerPage}`);
+                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}`);
                 if (response.status !== 200) {
                     throw new Error('Nie udało się pobrać danych');
                 }
@@ -42,9 +43,10 @@ export const AvailableStudents = () => {
         // Logika rezerwacji rozmowy
     };
 
-    const handleItemsPerPageChange = (event: React.ChangeEvent<{ value: number }>) => {
-        setItemsPerPage(event.target.value);
-        setAllPage(quantityStudents ? quantityStudents / (event.target.value) : 0);
+    const handleItemsPerPageChange = (event: SelectChangeEvent<number>) => {
+        const newValue = event.target.value as number;
+        setItemsPerPage(newValue);
+        setAllPage(quantityStudents ? Math.ceil(quantityStudents / newValue) : 0);
     };
 
     const handlePageChange = (newPage: number) => {
@@ -52,34 +54,27 @@ export const AvailableStudents = () => {
         setItemsPerPage(newPage);
     };
 
-    const handleToggleDetails = (student: AvailableStudentsProps) => {
-        const studentDetails: StudentDetailsProps = {
-            id: student.id,
-            firstName: student.firstName,
-            lastName: student.lastName,
-            courseCompletionRating: '',
-            engagementRating: '',
-            codeRating: '',
-            teamWorkRating: '',
-            preferredWorkLocation: '',
-            desiredCity: '',
-            expectedContractType: '',
-            expectedMonthlySalary: '',
-            internshipAgreement: false,
-            commercialProgrammingExperience: '',
-        };
-        setSelectedStudent(studentDetails);
-        setShowDetails(!showDetails);
-    };
+    const handleToggleDetails = (student: StudentInterfaceMain) => {
+        const studentId = student.id;
+        const isExpanded = expandedStudents.includes(studentId);
 
+        const newExpandedStudents = isExpanded
+            ? expandedStudents.filter((id) => id !== studentId)
+            : [...expandedStudents, studentId];
+
+        setExpandedStudents(newExpandedStudents);
+
+    };
 
     return (
         <Container component="main" maxWidth="xl">
             {students.map((student) => (
                 <Box
                     key={student.id}
-                    marginLeft={3} marginRight={3}
-                    borderBottom={10} borderColor={'#1E1E1F'}
+                    marginLeft={3}
+                    marginRight={3}
+                    borderBottom={10}
+                    borderColor={'#1E1E1F'}
                 >
                     <Box
                         border={0}
@@ -88,21 +83,36 @@ export const AvailableStudents = () => {
                         flexDirection="column"
                         alignItems="center"
                     >
-                        <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            width="100%"
+                        >
                             <Box>
                                 <Typography>{`${student.firstName} ${student.lastName}`}</Typography>
                             </Box>
                             <Box display="flex" gap={1}>
-                                <Button variant="contained" color="primary" onClick={() => handleReserveClick(student)}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => handleReserveClick(student)}
+                                >
                                     Zarezerwuj rozmowę
                                 </Button>
                                 <IconButton onClick={() => handleToggleDetails(student)}>
-                                    {showDetails && selectedStudent?.id === student.id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                    {expandedStudents.includes(student.id) ? (
+                                        <ExpandLessIcon />
+                                    ) : (
+                                        <ExpandMoreIcon />
+                                    )}
                                 </IconButton>
                             </Box>
                         </Box>
                     </Box>
-                    {showDetails && selectedStudent?.id === student.id && <StudentDetails obj={selectedStudent} />}
+                    {expandedStudents.includes(student.id) && (
+                        <StudentDetails obj={student} />
+                    )}
                 </Box>
             ))}
             <Box display="flex" alignItems="center" justifyContent="flex-end" width="100%" marginTop={2}>
