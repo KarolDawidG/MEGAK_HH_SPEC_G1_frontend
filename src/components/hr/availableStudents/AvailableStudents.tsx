@@ -50,12 +50,14 @@ export const AvailableStudents = () => {
     };
 
     const handlePageChange = (newPage: number) => {
-        // Logika do pobierania nowych rekordów z API dla nowej strony
         setItemsPerPage(newPage);
     };
+    const handleToggleDetails = (student1: StudentInterfaceMain) => {
+        if (!student1 || student1.id === undefined) {
+            return;
+        }
 
-    const handleToggleDetails = (student: StudentInterfaceMain) => {
-        const studentId = student.id;
+        const studentId = student1.id;
         const isExpanded = expandedStudents.includes(studentId);
 
         const newExpandedStudents = isExpanded
@@ -63,8 +65,8 @@ export const AvailableStudents = () => {
             : [...expandedStudents, studentId];
 
         setExpandedStudents(newExpandedStudents);
-
     };
+
 
     return (
         <Container component="main" maxWidth="xl">
@@ -124,7 +126,7 @@ export const AvailableStudents = () => {
                         </MenuItem>
                     ))}
                 </Select>
-                <Typography sx={{ marginRight: 2 }}>{`${itemsPerPage} z ${allPage}`}</Typography>
+                <Typography sx={{ marginRight: 2 }}>{`${itemsPerPage} z ${quantityStudents}`}</Typography>
                 <IconButton onClick={() => handlePageChange(itemsPerPage - 10)} disabled={itemsPerPage === 1}>
                     <KeyboardArrowLeftIcon />
                 </IconButton>
