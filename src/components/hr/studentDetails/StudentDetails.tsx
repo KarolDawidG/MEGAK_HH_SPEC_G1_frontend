@@ -11,12 +11,25 @@ const StyledGridItem = styled(Grid)(({ theme }) => ({
     marginRight: theme.spacing(0.1),
     height: '150px',
     width: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
 }));
 
 const globalTypographyStyle = {
-    fontSize: '16px',
+    fontSize: '12px',
     fontWeight: 500,
     color: '#ffffff',
+    lineHeight: '2',
+    marginTop: 'auto',
+    width: '100%'
+};
+
+const globalTypographyStyleData = {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#ffffff',
+    paddingY: 4,
+
 };
 
 export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => {
@@ -47,45 +60,45 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
         >
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena przejścia kursu`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.courseCompletion} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.courseCompletion} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena aktywności i zaangażowania`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.courseEngagemnet} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.courseEngagemnet} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena kodu w projekcie własnym`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.projectDegree} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.projectDegree} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena pracy zespołu w Scrum`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.teamProjectDegree} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.teamProjectDegree} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Preferowane miejsce pracy`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.targetWorkCity}</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.targetWorkCity}</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Docelowe miasto, gdzie chce pracować kandydat`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.targetWorkCity}</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.targetWorkCity}</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Oczekiwany typ kontraktu`}</Typography>
-                <Typography sx={globalTypographyStyle}>
+                <Typography sx={globalTypographyStyleData}>
                     {getContractTypeLabel(obj.expectedContractType)}
                 </Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Oczekiwane wynagrodzenie miesięczne netto`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.expectedSalary}</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.expectedSalary}</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Zgoda na staż:`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.canTakeApprenticeship ? 'Tak' : 'Nie'}</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.canTakeApprenticeship ? 'Tak' : 'Nie'}</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Doświadczenie w programowaniu komercyjnym:`}</Typography>
-                <Typography sx={globalTypographyStyle}>{obj.monthsOfCommercialExperience}</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.monthsOfCommercialExperience} miesięcy</Typography>
             </StyledGridItem>
         </Box>
     );
