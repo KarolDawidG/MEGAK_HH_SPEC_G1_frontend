@@ -18,8 +18,8 @@ interface MenuOption {
 };
 
 export const Header = () => {
-    const [user, setUser] = useState<string>('Marcin R');
-    const [gitLogin, setGitLogin] = useState<string>('Swichu553')
+    const [user, setUser] = useState<string>('');
+    const [gitLogin, setGitLogin] = useState<string>('')
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 

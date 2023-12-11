@@ -50,9 +50,6 @@ const LoginPage = () => {
                 
             }
             
-                
-    
-        
             if (response.data.role === 0){
                 redirect("/user-areczek");
                 notify("Welcome User");
