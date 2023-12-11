@@ -25,7 +25,7 @@ export const AvailableStudents = () => {
     useEffect(() => {
         const fetchAvailableStudents = async () => {
             try {
-                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}`);
+                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}`); // testowo bez /list?page=$ itemsPerPage}
                 if (response.status !== 200) {
                     throw new Error('Nie udało się pobrać danych');
                 }
