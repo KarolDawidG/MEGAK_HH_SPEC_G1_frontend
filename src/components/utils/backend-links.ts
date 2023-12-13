@@ -8,4 +8,5 @@ export const URL_CHANGE_PASSWORD = `${URL_API}/user/new-password`;
 export const URL_IMPORT_USERS = `${URL_API}/user/import`;
 export const URL_ADD_HR = `${URL_API}/user/add-hr`;
 export const URL_AVAILABLE_STUDENTS = `${URL_API}/student`;
+export const URL_TALK_STUDENTS = `${URL_API}/???`;
 
