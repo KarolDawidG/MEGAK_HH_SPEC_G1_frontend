@@ -31,6 +31,25 @@ const StudentRegistration = () => {
     const [workExperience, setWorkExperience] = useState("");
     const [courses, setCourses] = useState("");
 
+    const formData = {
+        email,
+        phone,
+        name,
+        lastname,
+        github,
+        portfolioUrls,
+        projectUrls,
+        bio,
+        expectedTypeWork,
+        targetWorkCity,
+        expectedContractType,
+        expectedSalary,
+        canTakeApprenticeship,
+        monthsOfCommercialExp,
+        education,
+        workExperience,
+        courses
+    };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -68,6 +87,7 @@ const StudentRegistration = () => {
             console.error('Incorrect salary amount.');
         }
 
+        console.log(formData)
     }  
 
 

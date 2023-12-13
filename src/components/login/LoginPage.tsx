@@ -50,15 +50,12 @@ const LoginPage = () => {
                 
             }
             
-                
-    
-        
             if (response.data.role === 0){
                 redirect("/user-areczek");
                 notify("Welcome User");
             }
             if (response.data.role === 1){
-                redirect("/hr-anetka");
+                redirect("/hr");
                 notify("Welcome HR");
             }
             if (response.data.role === 2){
