@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { notify } from '../utils/Notify';
+import { useAvatarEffect } from '../../hooks/useAvatarEffect';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -12,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { URL_LOGOUT } from '../utils/backend-links';
 
+
 interface MenuOption {
     label: string;
     route: string;
@@ -21,11 +24,14 @@ export const Header = () => {
     const [user, setUser] = useState<string>('');
     const [gitLogin, setGitLogin] = useState<string>('')
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+    const [avatarSrc, setAvatarSrc] = useState<string>('/default_user_icon');
     const navigate = useNavigate();
 
 
     const menuOptions: MenuOption[] = [
-        { label: 'Zmień hasło', route: `/passwordreset` },
+        //{ label: 'Zmień hasło', route: `/passwordreset` },
+
+        { label: 'Zmień hasło', route: '/passwordchange' },
         { label: 'Wyloguj', route: '/' },
     ];
 
@@ -38,24 +44,22 @@ export const Header = () => {
     };
 
     const handleMenuItemClick = async (route: string) => {
-        if (route === '/logout') {
+        if (route === '/') {
             try {
-                await axios.post(URL_LOGOUT);
+                await axios.get(URL_LOGOUT);
             } catch (error) {
-                console.error('Błąd wylogowania', error);
-            }
+                const message = 'Błąd wylogowania';
+                console.error(message);
+                notify(message);
+            };
         };
         navigate(route);
+        notify('Wylogowany');
     };
 
+    // Użyj hooka useAvatarEffect
+    useAvatarEffect({ github: gitLogin, setAvatarSrc });
 
-    const linkAvatarUser = () => {
-        if (gitLogin) {
-            //@TODO dodać sprawdzanie czy user istnieje
-            return `https://github.com/${gitLogin}.png`
-        }
-        return '/default_user_icon';
-    };
 
     return (
         <Container component="main" maxWidth='xl'>
@@ -75,7 +79,7 @@ export const Header = () => {
                 </Box>
 
                 <Box display="flex" alignItems="center">
-                    <Avatar alt="User Avatar" src={linkAvatarUser()} />
+                    <Avatar alt="User Avatar" src={avatarSrc} />
                     <Typography variant="h6" component="div" margin={2} >
                         {user}
                     </Typography>

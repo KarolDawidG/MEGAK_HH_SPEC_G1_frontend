@@ -66,7 +66,7 @@
         
         const sendCsvDataToServer = async (jsonData: string) => {
             try {
-                const response = await axios.post(URL_IMPORT_USERS, {jsonData: JSON.stringify(jsonData)}, {
+                const response = await axios.post(URL_IMPORT_USERS, JSON.stringify(jsonData), {
                     headers: {
                         'Content-Type': 'application/json'
                     },

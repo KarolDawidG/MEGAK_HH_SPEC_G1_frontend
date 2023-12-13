@@ -55,7 +55,7 @@ const LoginPage = () => {
                 notify("Welcome User");
             }
             if (response.data.role === 1){
-                redirect("/hr-anetka");
+                redirect("/hr");
                 notify("Welcome HR");
             }
             if (response.data.role === 2){
