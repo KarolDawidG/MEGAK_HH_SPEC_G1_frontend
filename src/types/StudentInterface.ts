@@ -20,13 +20,13 @@ export enum studentStatus {
 }
 
 export interface StudentInterfaceMain {
-  id: string;
+  userId: string;
   firstName: string;
   lastName: string;
 }
 
 export interface StudentInterface {
-  id: string, //user id
+  userId: string,    // User id
   firstName: string,  // User first name
   lastName: string,  // User last name
   expectedWorkType: number,  // Expected work type

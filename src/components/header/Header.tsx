@@ -73,9 +73,9 @@ export const Header = () => {
             >
                 <Box component='image'>
                     <Link to="/" >
-                    <img src="/Megaklogo.png" alt="MegaK logo" height="50" />
+                        <img src="/Megaklogo.png" alt="MegaK logo" height="50" />
                     </Link>
-                    
+
                 </Box>
 
                 <Box display="flex" alignItems="center">
