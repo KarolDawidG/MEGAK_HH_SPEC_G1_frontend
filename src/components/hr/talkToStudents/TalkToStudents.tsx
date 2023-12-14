@@ -26,7 +26,9 @@ export const TalkToStudents = () => {
     useEffect(() => {
         const fetchAvailableStudents = async () => {
             try {
-                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${page}&pitems${itemsPerPage}`);
+                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${page}&pitems=${itemsPerPage}`, {
+                    withCredentials: true,
+                });
                 if (response.status !== 200) {
                     throw new Error('Nie udało się pobrać danych');
                 }

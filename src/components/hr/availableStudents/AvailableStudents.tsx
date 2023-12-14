@@ -14,7 +14,6 @@ import { StudentInterface, StudentInterfaceMain } from '../../../types/StudentIn
 import { Container, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-
 export const AvailableStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
     const [page, setPage] = useState<number>(1);
@@ -25,10 +24,13 @@ export const AvailableStudents = () => {
     useEffect(() => {
         const fetchAvailableStudents = async () => {
             try {
-                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${page}&pitems${itemsPerPage}`);
+                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${page}&pitems=${itemsPerPage}`, {
+                    withCredentials: true,
+                });
                 if (response.status !== 200) {
                     throw new Error('Nie udało się pobrać danych');
                 }
+                console.log(response)
                 setStudents(response.data[0]);
                 setQuantityStudents(response.data[1]);
             } catch (error) {
@@ -37,7 +39,7 @@ export const AvailableStudents = () => {
         };
 
         fetchAvailableStudents();
-    }, [itemsPerPage]);
+    }, [page, itemsPerPage]);
 
     const handleReserveClick = (student: StudentInterface) => {
         // Logika rezerwacji rozmowy
