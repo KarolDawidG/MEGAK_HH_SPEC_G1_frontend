@@ -11,6 +11,7 @@ import {AuthProvider} from './AuthContext';
 import {Administrator} from "./components/admin/administrator";
 import { MainHrView } from "./components/hr/mainHrView/mainHrView";
 import { Activation } from "./components/activation/Activation";
+import StudentCvDetails from "./components/hr/studentCvView/StudentCv";
 
 export const App = () => {
 
@@ -28,7 +29,7 @@ export const App = () => {
             <Route path='/activation/:id/:token' element={<Activation />} />{/* Done. */}
             <Route path='/admin' element={<Administrator />} />
             <Route path='/hr' element={<MainHrView />} />
-
+            <Route path='/studentcv' element={<StudentCvDetails />} />
           </Routes>
         </BrowserRouter >
       </ThemeProvider>
