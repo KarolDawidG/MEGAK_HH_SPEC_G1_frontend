@@ -76,12 +76,6 @@ export const AvailableStudents = () => {
         return (viewList > ((quantityStudents) ? quantityStudents : 0)) ? quantityStudents : viewList;
     };
 
-    const shortLastName = (name: string | undefined): string => {
-        const lastName = `${name?.charAt(0)}.`;
-        return lastName ? lastName : '';
-    }
-
-
     return (
         <Container component="main" maxWidth="xl">
             {students.map((student) => (
@@ -106,7 +100,7 @@ export const AvailableStudents = () => {
                             width="100%"
                         >
                             <Box>
-                                <Typography>{`${student.firstName} ${shortLastName(student.lastName)}`}</Typography>
+                                <Typography>{`${student.firstName} ${student.lastName?.charAt(0)}.`}</Typography>
                             </Box>
                             <Box display="flex" gap={1}>
                                 <Button
