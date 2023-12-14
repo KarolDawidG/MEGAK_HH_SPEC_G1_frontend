@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { validateGithub } from "../components/utils/validation";
 
 interface UseAvatarEffectProps {
     github: string;
@@ -10,7 +9,7 @@ export const useAvatarEffect = ({ github, setAvatarSrc }: UseAvatarEffectProps):
     useEffect(() => {
         const fetchAvatar = async (): Promise<void> => {
             try {
-                if (github && (await validateGithub(github))) {
+                if (github) {
                     const avatarLink = `https://github.com/${github}.png`;
                     setAvatarSrc(avatarLink);
                 } else {
