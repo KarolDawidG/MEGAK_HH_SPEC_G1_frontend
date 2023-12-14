@@ -79,7 +79,7 @@ const ForgotPasswordPage = () => {
                     <Grid container rowSpacing={2.5}>
                         <Grid item xs={12} >
                             <Typography variant="body2" align="right" >
-                            <Link href="http://localhost:5173/login" variant="body2" underline="hover">
+                            <Link href="http://localhost:5173" variant="body2" underline="hover">
                                 Zaloguj się
                             </Link></Typography>
 
