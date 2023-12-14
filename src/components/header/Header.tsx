@@ -29,7 +29,7 @@ export const Header = () => {
     const { auth } = authContext;
 
     const [user, setUser] = useState<string>(auth ? auth.email : '');
-    const [gitLogin, setGitLogin] = useState<string>('KarolDawidG');
+    const [gitLogin, setGitLogin] = useState<string>('Swichu553');
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const [avatarSrc, setAvatarSrc] = useState<string>('/default_user_icon');
     const redirect = useNavigate();
@@ -54,6 +54,8 @@ export const Header = () => {
                 const response = await axios.get(URL_LOGOUT, {
                     withCredentials: true
                 });
+
+
 
                 if (response.status === 200) {
                     notify(response.data.message);

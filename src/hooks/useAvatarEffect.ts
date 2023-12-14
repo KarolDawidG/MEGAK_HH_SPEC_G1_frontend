@@ -13,7 +13,7 @@ export const useAvatarEffect = ({ github, setAvatarSrc }: UseAvatarEffectProps):
                     const avatarLink = `https://github.com/${github}.png`;
                     setAvatarSrc(avatarLink);
                 } else {
-                    setAvatarSrc('/default_user_icon');
+                    setAvatarSrc('/default_user_icon.jpg');
                 }
             } catch (error) {
                 console.error('Błąd podczas pobierania linku do avatara', error);
