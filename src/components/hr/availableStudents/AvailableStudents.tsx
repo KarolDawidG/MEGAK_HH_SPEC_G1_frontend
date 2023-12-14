@@ -10,14 +10,15 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { StudentDetails } from '../studentDetails/StudentDetails';
 import axios from 'axios';
 import { URL_AVAILABLE_STUDENTS } from '../../utils/backend-links';
-import { StudentInterface, StudentInterfaceMain } from '../../../types/StudentInterface';
+import { StudentInterfaceMain } from '../../../types/StudentInterface';
 import { Container, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
+import { StudentListResponse } from '../../../types/StudentListResponse';
 
 export const AvailableStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [students, setStudents] = useState<StudentInterface[]>([]);
+    const [students, setStudents] = useState<StudentListResponse[]>([]);
     const [quantityStudents, setQuantityStudents] = useState<number | null>(0);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
@@ -41,7 +42,7 @@ export const AvailableStudents = () => {
         fetchAvailableStudents();
     }, [page, itemsPerPage]);
 
-    const handleReserveClick = (student: StudentInterface) => {
+    const handleReserveClick = (student: StudentListResponse) => {
         // Logika rezerwacji rozmowy
     };
 

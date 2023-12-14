@@ -2,7 +2,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material';
-import { StudentInterface, workTypeEnum } from '../../../types/StudentInterface';
+import { workTypeEnum } from '../../../types/StudentInterface';
+import { StudentListResponse } from '../../../types/StudentListResponse';
 
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
@@ -32,7 +33,7 @@ const globalTypographyStyleData = {
 
 };
 
-export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => {
+export const StudentDetails: React.FC<{ obj: StudentListResponse }> = ({ obj }) => {
     console.log('Dane otrzymane w StudentDetails:', obj);
 
     const getContractTypeLabel = (contractType: number): string => {
@@ -69,7 +70,7 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena aktywności i zaangażowania`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{checkGrade(obj.courseEngagemnet)} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{checkGrade(obj.courseEngagement)} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena kodu w projekcie własnym`}</Typography>
@@ -103,7 +104,7 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Doświadczenie w programowaniu komercyjnym:`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{obj.monthsOfCommercialExperience} miesięcy</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.monthsOfCommercialExperiecne} miesięcy</Typography>
             </StyledGridItem>
         </Box>
     );

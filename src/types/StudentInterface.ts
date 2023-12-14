@@ -26,17 +26,54 @@ export interface StudentInterfaceMain {
 }
 
 export interface StudentInterface {
-  userId: string,    // User id
-  firstName: string,  // User first name
-  lastName: string,  // User last name
-  expectedWorkType: number,  // Expected work type
-  targetWorkCity: string,  // Target work city
-  expectedContractType: number,  // Expected contract type
-  expectedSalary: number,  // Expected salary
-  canTakeApprenticeship: boolean, // Can take apprenticeship
-  monthsOfCommercialExperience: number, // Months of user commercial experience
-  projectDegree: number, // Project degree
-  teamProjectDegree: number, // Team project degree
-  courseCompletion: number, // Course completion degree
-  courseEngagemnet: number // Course engagement degree
+  id: string;
+  userId: string;
+  status: studentStatus;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  githubName: string | null;
+  bio: string;
+  expectedWorkType: workTypeEnum;
+  targetWorkCity: string;
+  expectedContractType: contractTypeEnum;
+  expectedSalary: number | null;
+  canTakeApprenticeship: boolean;
+  monthsOfCommercialExperience: number;
+  education: string;
+  workExperience: string;
+  courses: string;
+  createdAt: string;
+  updatedAt: () => string;
 }
+
+export type StudentDetails = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  githubName: string | null;
+  bio: string;
+  expectedWorkType: workTypeEnum;
+  targetWorkCity: string;
+  expectedContractType: contractTypeEnum;
+  expectedSalary: number | null;
+  canTakeApprenticeship: boolean;
+  monthsOfCommercialExperience: number;
+  education: string;
+  workExperience: string;
+  courses: string;
+};
+
+export interface StudentProfileResponse {
+  studentDetails: StudentDetails;
+}
+
+export interface githubNameValidatorResponse {
+  isGithubUser: boolean;
+  isGithubUserUnique: boolean;
+}
+
+export type UpdatedStudentResponse = {
+  isSuccess: boolean;
+  message: string;
+};

@@ -7,18 +7,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { StudentDetails } from '../studentDetails/StudentDetails';
-import axios from 'axios';
-import { URL_AVAILABLE_STUDENTS } from '../../utils/backend-links';
-import { StudentInterface, StudentInterfaceMain } from '../../../types/StudentInterface';
-import { Avatar, Container, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
+import { StudentDetails } from '../studentDetails/StudentDetails';
+import { URL_TALK_STUDENTS } from '../../utils/backend-links';
+import { StudentInterfaceMain } from '../../../types/StudentInterface';
+import { StudentListResponse } from '../../../types/StudentListConversationResponse';
+import { Avatar, Container, MenuItem, Select } from '@mui/material';
+import axios from 'axios';
 
 
 export const TalkToStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [students, setStudents] = useState<StudentInterface[]>([]);
+    const [students, setStudents] = useState<StudentListResponse[]>([]);
     const [quantityStudents, setQuantityStudents] = useState<number | null>(0);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
@@ -26,7 +27,7 @@ export const TalkToStudents = () => {
     useEffect(() => {
         const fetchAvailableStudents = async () => {
             try {
-                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${page}&pitems=${itemsPerPage}`, {
+                const response = await axios.get(`${URL_TALK_STUDENTS}/list?page=${page}&pitems=${itemsPerPage}`, {
                     withCredentials: true,
                 });
                 if (response.status !== 200) {
@@ -86,6 +87,7 @@ export const TalkToStudents = () => {
     };
 
 
+
     return (
         <Container component="main" maxWidth="xl">
             {students.map((student) => (
@@ -107,10 +109,10 @@ export const TalkToStudents = () => {
                             <Box display="flex" gap={4}>
                                 <Box>
                                     <Typography style={{ fontSize: '0.8rem' }}>{`Rezerwacja do`}</Typography>
-                                    <Typography variant="h6" style={{ fontSize: '1.2rem' }}>{`06.12.2023 r.`}</Typography>
+                                    <Typography variant="h6" style={{ fontSize: '1.2rem' }}>{student.reservedTo.toISOString()}</Typography>
                                 </Box>
                                 <Box display="flex" alignItems="center" gap={2}>
-                                    <Avatar alt="User Avatar" src={`https://github.com/swichu553.png`} />
+                                    <Avatar alt="User Avatar" src={`https://github.com/${student.githubUserName}.png`} />
                                     <Typography >{`${student.firstName} ${student.lastName}`}</Typography>
                                 </Box>
 
