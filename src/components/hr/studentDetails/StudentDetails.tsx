@@ -55,7 +55,7 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
 
     const checkGrade = (grade: number | null): number => {
         return grade ? grade : 0;
-    }
+    };
 
     return (
         <Box
