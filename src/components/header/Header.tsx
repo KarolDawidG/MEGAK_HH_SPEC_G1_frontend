@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { notify } from '../utils/Notify';
@@ -13,6 +13,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { URL_LOGOUT } from '../utils/backend-links';
+import { AuthContext } from "../../AuthContext";
 
 
 interface MenuOption {
@@ -21,17 +22,21 @@ interface MenuOption {
 };
 
 export const Header = () => {
-    const [user, setUser] = useState<string>('');
-    const [gitLogin, setGitLogin] = useState<string>('')
+    const authContext = useContext(AuthContext);
+    if (!authContext) {
+        return <div>Loading...</div>;
+    }
+    const { auth } = authContext;
+
+    const [user, setUser] = useState<string>(auth ? auth.email : '');
+    const [gitLogin, setGitLogin] = useState<string>('KarolDawidG');
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const [avatarSrc, setAvatarSrc] = useState<string>('/default_user_icon');
-    const navigate = useNavigate();
+    const redirect = useNavigate();
 
 
     const menuOptions: MenuOption[] = [
-        //{ label: 'Zmień hasło', route: `/passwordreset` },
-
-        { label: 'Zmień hasło', route: '/passwordchange' },
+        { label: 'Zmień hasło', route: '/passwordreset' },
         { label: 'Wyloguj', route: '/' },
     ];
 
@@ -46,20 +51,38 @@ export const Header = () => {
     const handleMenuItemClick = async (route: string) => {
         if (route === '/') {
             try {
-                await axios.get(URL_LOGOUT);
+                const response = await axios.get(URL_LOGOUT, {
+                    withCredentials: true
+                });
+
+                if (response.status === 200) {
+                    notify(response.data.message);
+                    setTimeout(() => redirect(route), 1000);
+                }
             } catch (error) {
-                const message = 'Błąd wylogowania';
-                console.error(message);
-                notify(message);
-            };
-        };
-        navigate(route);
-        notify('Wylogowany');
+                if (axios.isAxiosError(error) && error.response) {
+                    notify(error.response.data.message);
+                } else {
+                    console.error('Błąd wylogowania użytkownika');
+                    notify("Wystąpił problem. Spróbuj ponownie.");
+                }
+            }
+        } else {
+            redirect(route);
+        }
     };
 
-    // Użyj hooka useAvatarEffect
+
+
+
+
     useAvatarEffect({ github: gitLogin, setAvatarSrc });
 
+    useEffect(() => {
+        if (auth) {
+            setUser(auth.email || '');
+        }
+    }, [auth]);
 
     return (
         <Container component="main" maxWidth='xl'>
@@ -101,6 +124,7 @@ export const Header = () => {
                                 {option.label}
                             </MenuItem>
                         ))}
+
                     </Menu>
                 </Box>
             </Box>
