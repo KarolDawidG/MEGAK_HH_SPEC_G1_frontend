@@ -48,25 +48,30 @@
             setMenuAnchor(null);
         };
 
-        const handleMenuItemClick = async () => {
-            try {
-                const response = await axios.get(URL_LOGOUT, {
-                    withCredentials: true
-                });
+        const handleMenuItemClick = async (route: string) => {
+            if (route === '/') {
+                try {
+                    const response = await axios.get(URL_LOGOUT, {
+                        withCredentials: true
+                    });
         
-                if (response.status === 200) {
-                    notify(response.data.message);
-                    setTimeout(() => redirect('/'), 1000);
+                    if (response.status === 200) {
+                        notify(response.data.message);
+                        setTimeout(() => redirect(route), 1000);
+                    }
+                } catch (error) {
+                    if (axios.isAxiosError(error) && error.response) {
+                        notify(error.response.data.message); 
+                    } else {
+                        console.error('Błąd wylogowania użytkownika');
+                        notify("Wystąpił problem. Spróbuj ponownie.");
+                    }
                 }
-            } catch (error) {
-                if (axios.isAxiosError(error) && error.response) {
-                    notify(error.response.data.message); 
-                } else {
-                    console.error('Błąd wylogowaia użytkownika');
-                    notify("Wystąpił problem. Spróbuj ponownie.");
-                }
+            } else {
+                redirect(route);
             }
         };
+        
         
        
         
@@ -115,10 +120,11 @@
                             onClose={handleMenuClose}
                         >
                             {menuOptions.map((option) => (
-                                <MenuItem key={option.label} onClick={() => handleMenuItemClick()}>
+                                <MenuItem key={option.label} onClick={() => handleMenuItemClick(option.route)}>
                                     {option.label}
                                 </MenuItem>
                             ))}
+
                         </Menu>
                     </Box>
                 </Box>
