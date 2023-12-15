@@ -19,10 +19,7 @@ export const Filter: React.FC<FilterProps> = ({ onClose }) => {
     };
 
     const handleApplyFilters = () => {
-        // Tutaj można dodać logikę zastosowania filtrów
-        // ...
 
-        // Po zastosowaniu filtrów, zamknij komponent
         onClose();
     };
 
