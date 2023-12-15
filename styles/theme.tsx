@@ -15,6 +15,7 @@ const theme = createTheme({
 
   },
   typography: {
+    fontFamily: 'Catamaran',
     button: {
       textTransform: 'none'
     },
