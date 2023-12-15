@@ -10,3 +10,8 @@ export const URL_ADD_HR = `${URL_API}/user/add-hr`;
 export const URL_AVAILABLE_STUDENTS = `${URL_API}/student`;
 export const URL_TALK_STUDENTS = `${URL_API}/student/conversation-list`;
 
+//HR function URL
+const URL_HR = `${URL_API}/hr-profile`;
+export const URL_ADD_STUDENT_TO_CONVERSTAION = `${URL_HR}/choose-student`;
+export const URL_ADD_STUDENT_TO_HIRE = `${URL_HR}/student/hire`;
+export const URL_DEL_STUDENT_TO_CONVERSTAION = `${URL_HR}/student/cancel`;

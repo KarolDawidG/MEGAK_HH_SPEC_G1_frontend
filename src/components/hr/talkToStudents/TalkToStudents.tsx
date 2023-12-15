@@ -14,6 +14,7 @@ import { StudentInterfaceMain } from '../../../types/StudentInterface';
 import { StudentListResponse } from '../../../types/StudentListConversationResponse';
 import { Avatar, Container, MenuItem, Select } from '@mui/material';
 import axios from 'axios';
+import { handleHired, handleNoInterest, handleShowCV } from '../../utils/buttonUtils';
 
 
 export const TalkToStudents = () => {
@@ -43,17 +44,6 @@ export const TalkToStudents = () => {
         fetchAvailableStudents();
     }, [itemsPerPage]);
 
-    const handleShowCV = () => {
-        // Logika obsługi pokazywania CV
-    };
-
-    const handleNoInterest = () => {
-        // Logika obsługi braku zainteresowania
-    };
-
-    const handleHired = () => {
-        // Logika obsługi zatrudnienia
-    };
 
     const handleItemsPerPageChange = (event: SelectChangeEvent<number>) => {
         const newValue = event.target.value as number;
@@ -118,13 +108,13 @@ export const TalkToStudents = () => {
 
                             </Box>
                             <Box display="flex" gap={2}>
-                                <Button variant="contained" color="primary" onClick={() => handleShowCV()}>
+                                <Button variant="contained" color="primary" onClick={() => handleShowCV(student.userId)}>
                                     Pokaż CV
                                 </Button>
-                                <Button variant="contained" color="primary" onClick={() => handleNoInterest()}>
+                                <Button variant="contained" color="primary" onClick={() => handleNoInterest(student.userId)}>
                                     Brak zainteresowania
                                 </Button>
-                                <Button variant="contained" color="primary" onClick={() => handleHired()}>
+                                <Button variant="contained" color="primary" onClick={() => handleHired(student.userId)}>
                                     Zatrudniony
                                 </Button>
                                 <IconButton onClick={() => handleToggleDetails(student)}>

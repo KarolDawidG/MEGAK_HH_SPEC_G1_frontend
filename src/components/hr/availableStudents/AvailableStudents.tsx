@@ -14,6 +14,7 @@ import { StudentInterfaceMain } from '../../../types/StudentInterface';
 import { Container, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { StudentListResponse } from '../../../types/StudentListResponse';
+import { handleReserveClick } from '../../utils/buttonUtils';
 
 export const AvailableStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
@@ -31,7 +32,6 @@ export const AvailableStudents = () => {
                 if (response.status !== 200) {
                     throw new Error('Nie udało się pobrać danych');
                 }
-                console.log(response)
                 setStudents(response.data[0]);
                 setQuantityStudents(response.data[1]);
             } catch (error) {
@@ -42,9 +42,6 @@ export const AvailableStudents = () => {
         fetchAvailableStudents();
     }, [page, itemsPerPage]);
 
-    const handleReserveClick = (student: StudentListResponse) => {
-        // Logika rezerwacji rozmowy
-    };
 
     const handleItemsPerPageChange = (event: SelectChangeEvent<number>) => {
         const newValue = event.target.value as number;
@@ -107,7 +104,7 @@ export const AvailableStudents = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={() => handleReserveClick(student)}
+                                    onClick={() => handleReserveClick(student.userId)}
                                 >
                                     Zarezerwuj rozmowę
                                 </Button>
