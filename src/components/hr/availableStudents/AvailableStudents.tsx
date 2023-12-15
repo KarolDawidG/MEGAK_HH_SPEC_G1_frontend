@@ -10,22 +10,25 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { StudentDetails } from '../studentDetails/StudentDetails';
 import axios from 'axios';
 import { URL_AVAILABLE_STUDENTS } from '../../utils/backend-links';
-import { StudentInterface, StudentInterfaceMain } from '../../../types/StudentInterface';
+import { StudentInterfaceMain } from '../../../types/StudentInterface';
 import { Container, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-
+import { StudentListResponse } from '../../../types/StudentListResponse';
+import { handleReserveClick } from '../../utils/buttonUtils';
 
 export const AvailableStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
-    const [students, setStudents] = useState<StudentInterface[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [students, setStudents] = useState<StudentListResponse[]>([]);
     const [quantityStudents, setQuantityStudents] = useState<number | null>(0);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-    const [allPage, setAllPage] = useState<number>(0);
 
     useEffect(() => {
         const fetchAvailableStudents = async () => {
             try {
-                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}`); // testowo bez /list?page=$ itemsPerPage}
+                const response = await axios.get(`${URL_AVAILABLE_STUDENTS}/list?page=${page}&pitems=${itemsPerPage}`, {
+                    withCredentials: true,
+                });
                 if (response.status !== 200) {
                     throw new Error('Nie udało się pobrać danych');
                 }
@@ -37,42 +40,45 @@ export const AvailableStudents = () => {
         };
 
         fetchAvailableStudents();
-    }, [itemsPerPage]);
+    }, [page, itemsPerPage]);
 
-    const handleReserveClick = (student: StudentInterface) => {
-        // Logika rezerwacji rozmowy
-    };
 
     const handleItemsPerPageChange = (event: SelectChangeEvent<number>) => {
         const newValue = event.target.value as number;
         setItemsPerPage(newValue);
-        setAllPage(quantityStudents ? Math.ceil(quantityStudents / newValue) : 0);
+        setPage(1);
     };
 
+
     const handlePageChange = (newPage: number) => {
-        setItemsPerPage(newPage);
+        setPage(page + newPage);
     };
+
     const handleToggleDetails = (student1: StudentInterfaceMain) => {
-        if (!student1 || student1.id === undefined) {
+        if (!student1 || student1.userId === undefined) {
             return;
         }
 
-        const studentId = student1.id;
+        const studentId = student1.userId;
         const isExpanded = expandedStudents.includes(studentId);
 
         const newExpandedStudents = isExpanded
-            ? expandedStudents.filter((id) => id !== studentId)
+            ? expandedStudents.filter((userId) => userId !== studentId)
             : [...expandedStudents, studentId];
 
         setExpandedStudents(newExpandedStudents);
     };
 
+    const quantityStudentView = () => {
+        const viewList = itemsPerPage * page;
+        return (viewList > ((quantityStudents) ? quantityStudents : 0)) ? quantityStudents : viewList;
+    };
 
     return (
         <Container component="main" maxWidth="xl">
             {students.map((student) => (
                 <Box
-                    key={student.id}
+                    key={student.userId}
                     marginLeft={3}
                     marginRight={3}
                     borderBottom={10}
@@ -92,18 +98,18 @@ export const AvailableStudents = () => {
                             width="100%"
                         >
                             <Box>
-                                <Typography>{`${student.firstName} ${student.lastName}`}</Typography>
+                                <Typography>{`${student.firstName} ${student.lastName?.charAt(0)}.`}</Typography>
                             </Box>
                             <Box display="flex" gap={1}>
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={() => handleReserveClick(student)}
+                                    onClick={() => handleReserveClick(student.userId)}
                                 >
                                     Zarezerwuj rozmowę
                                 </Button>
                                 <IconButton onClick={() => handleToggleDetails(student)}>
-                                    {expandedStudents.includes(student.id) ? (
+                                    {expandedStudents.includes(student.userId) ? (
                                         <ExpandLessIcon />
                                     ) : (
                                         <ExpandMoreIcon />
@@ -112,7 +118,7 @@ export const AvailableStudents = () => {
                             </Box>
                         </Box>
                     </Box>
-                    {expandedStudents.includes(student.id) && (
+                    {expandedStudents.includes(student.userId) && (
                         <StudentDetails obj={student} />
                     )}
                 </Box>
@@ -120,17 +126,17 @@ export const AvailableStudents = () => {
             <Box display="flex" alignItems="center" justifyContent="flex-end" width="100%" marginTop={2}>
                 <Typography sx={{ marginRight: 2 }}>Ilość elementów:</Typography>
                 <Select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                    {[10, 20, 30, 40, 50].map((value) => (
+                    {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((value) => (
                         <MenuItem key={value} value={value}>
                             {value}
                         </MenuItem>
                     ))}
                 </Select>
-                <Typography sx={{ marginRight: 2 }}>{`${itemsPerPage} z ${quantityStudents}`}</Typography>
-                <IconButton onClick={() => handlePageChange(itemsPerPage - 10)} disabled={itemsPerPage === 1}>
+                <Typography sx={{ marginRight: 2 }}>{`${quantityStudentView()} z ${quantityStudents}`}</Typography>
+                <IconButton onClick={() => handlePageChange(-1)} disabled={page === 1}>
                     <KeyboardArrowLeftIcon />
                 </IconButton>
-                <IconButton onClick={() => handlePageChange(itemsPerPage + 10)}>
+                <IconButton onClick={() => handlePageChange(1)} disabled={quantityStudentView() === quantityStudents}>
                     <KeyboardArrowRightIcon />
                 </IconButton>
             </Box>

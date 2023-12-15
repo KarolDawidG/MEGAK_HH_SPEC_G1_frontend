@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -7,12 +7,11 @@ import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import FilterAlt from '@mui/icons-material/FilterAlt';
 import { Container, CssBaseline } from '@mui/material';
-
-
-
+import { Filter } from '@mui/icons-material';
 
 export const SearchStudents = () => {
     const [isLabelVisible, setIsLabelVisible] = useState(true);
+    const [isFilterOpen, setIsFilterOpen] = useState(false); // Dodaj stan dla widoczności komponentu Filter
 
     const handleFocus = () => {
         setIsLabelVisible(false);
@@ -24,8 +23,16 @@ export const SearchStudents = () => {
         }
     };
 
+    const handleFilterButtonClick = () => {
+        setIsFilterOpen(true);
+    };
+
+    const handleFilterClose = () => {
+        setIsFilterOpen(false);
+    };
+
     return (
-        <Container component="main" maxWidth='xl'>
+        <Container component="main" maxWidth="xl">
             <CssBaseline />
             <Box display="flex" alignItems="center" justifyContent="space-between">
                 <TextField
@@ -37,13 +44,12 @@ export const SearchStudents = () => {
                     style={{ width: '350px', height: 'auto', alignItems: 'left', background: '#1E1E1F' }}
                     InputProps={{
                         startAdornment: (
-                            <InputAdornment position="start" style={{ margin: 0, }}>
+                            <InputAdornment position="start" style={{ margin: 0 }}>
                                 <SearchIcon color="action" style={{ color: '#757575', alignSelf: 'center' }} />
                                 <InputLabel
                                     shrink={true}
                                     htmlFor="search-field"
                                     style={{ fontSize: '24px', color: '#757575', marginLeft: 8 }}
-
                                 >
                                     {isLabelVisible ? 'Szukaj' : ''}
                                 </InputLabel>
@@ -51,15 +57,19 @@ export const SearchStudents = () => {
                         ),
                     }}
                 />
-                <Box marginLeft={2} >
-                    <Button variant="outlined" startIcon={<FilterAlt style={{ fill: '#4D4D4D' }} />} style={{ color: 'white', background: '#1E1E1F', borderWidth: '0' }} >
+                <Box marginLeft={2}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<FilterAlt style={{ fill: '#4D4D4D' }} />}
+                        style={{ color: 'white', background: '#1E1E1F', borderWidth: '0' }}
+                        onClick={handleFilterButtonClick}
+                    >
                         Filtrowanie
                     </Button>
                 </Box>
             </Box>
-        </Container>
 
+
+        </Container>
     );
 };
-
-

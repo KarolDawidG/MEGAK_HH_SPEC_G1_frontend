@@ -49,7 +49,7 @@ const theme = createTheme({
       styleOverrides: {
         notchedOutline: {
           borderRadius: 0,
-          borderWidth:0,
+          borderWidth: 0,
         }
 
       }

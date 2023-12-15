@@ -2,7 +2,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material';
-import { StudentInterface, workTypeEnum } from '../../../types/StudentInterface';
+import { workTypeEnum } from '../../../types/StudentInterface';
+import { StudentListResponse } from '../../../types/StudentListResponse';
 
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
@@ -32,10 +33,11 @@ const globalTypographyStyleData = {
 
 };
 
-export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => {
+export const StudentDetails: React.FC<{ obj: StudentListResponse }> = ({ obj }) => {
     console.log('Dane otrzymane w StudentDetails:', obj);
 
-    const getContractTypeLabel = (contractType: workTypeEnum): string => {
+    const getContractTypeLabel = (contractType: number): string => {
+        contractType = Number(contractType);
         switch (contractType) {
             case workTypeEnum.noPreferences:
                 return 'Brak preferencji';
@@ -52,6 +54,10 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
         }
     };
 
+    const checkGrade = (grade: number | null): number => {
+        return grade ? grade : 0;
+    };
+
     return (
         <Box
             display="flex"
@@ -60,19 +66,19 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
         >
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena przejścia kursu`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{obj.courseCompletion} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{checkGrade(obj.courseCompletion)} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena aktywności i zaangażowania`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{obj.courseEngagemnet} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{checkGrade(obj.courseEngagement)} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena kodu w projekcie własnym`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{obj.projectDegree} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{checkGrade(obj.projectDegree)} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Ocena pracy zespołu w Scrum`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{obj.teamProjectDegree} / 5</Typography>
+                <Typography sx={globalTypographyStyleData}>{checkGrade(obj.teamProjectDegree)} / 5</Typography>
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Preferowane miejsce pracy`}</Typography>
@@ -98,7 +104,7 @@ export const StudentDetails: React.FC<{ obj: StudentInterface }> = ({ obj }) => 
             </StyledGridItem>
             <StyledGridItem item xs={12}>
                 <Typography sx={globalTypographyStyle}>{`Doświadczenie w programowaniu komercyjnym:`}</Typography>
-                <Typography sx={globalTypographyStyleData}>{obj.monthsOfCommercialExperience} miesięcy</Typography>
+                <Typography sx={globalTypographyStyleData}>{obj.monthsOfCommercialExperiecne} miesięcy</Typography>
             </StyledGridItem>
         </Box>
     );
