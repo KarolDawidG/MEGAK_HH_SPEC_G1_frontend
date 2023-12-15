@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { notify } from '../utils/Notify';
+import { notify, notifyError } from '../utils/Notify';
 import { useAvatarEffect } from '../../hooks/useAvatarEffect';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -63,10 +63,10 @@ export const Header = () => {
                 }
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
-                    notify(error.response.data.message);
+                    notifyError(error.response.data.message);
                 } else {
                     console.error('Błąd wylogowania użytkownika');
-                    notify("Wystąpił problem. Spróbuj ponownie.");
+                    notifyError("Wystąpił problem. Spróbuj ponownie.");
                 }
             }
         } else {
