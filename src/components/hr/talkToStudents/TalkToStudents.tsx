@@ -11,16 +11,17 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import { StudentDetails } from '../studentDetails/StudentDetails';
 import { URL_TALK_STUDENTS } from '../../utils/backend-links';
 import { StudentInterfaceMain } from '../../../types/StudentInterface';
-import { StudentListResponse } from '../../../types/StudentListConversationResponse';
+import { StudentConversationListResponse } from '../../../types/StudentListConversationResponse';
 import { Avatar, Container, MenuItem, Select } from '@mui/material';
 import axios from 'axios';
 import { handleHired, handleNoInterest, handleShowCV } from '../../utils/buttonUtils';
+import { notifyError } from '../../utils/Notify';
 
 
 export const TalkToStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [students, setStudents] = useState<StudentListResponse[]>([]);
+    const [students, setStudents] = useState<StudentConversationListResponse[]>([]);
     const [quantityStudents, setQuantityStudents] = useState<number | null>(0);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
@@ -37,7 +38,7 @@ export const TalkToStudents = () => {
                 setStudents(response.data[0]);
                 setQuantityStudents(response.data[1]);
             } catch (error) {
-                console.error('Błąd podczas pobierania danych:', error);
+                notifyError('Błąd podczas pobierania danych:')
             }
         };
 

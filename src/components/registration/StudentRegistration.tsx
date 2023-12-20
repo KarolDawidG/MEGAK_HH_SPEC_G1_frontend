@@ -8,9 +8,9 @@ import Container from '@mui/material/Container';
 import { FormControlLabel, MenuItem, Switch } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useState } from "react";
-import { notify } from "../utils/Notify";
-import { expectedTypeWorkEnum, expectedContractTypeEnum} from './enum'
-import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub} from '../utils/validation';
+import { notify, notifyError } from "../utils/Notify";
+import { expectedTypeWorkEnum, expectedContractTypeEnum } from './enum'
+import { validatePortfolioUrls, validateEmail, validatePhone, validateExpectedSalary, validatemonthsOfCommercialExp, validateGithub } from '../utils/validation';
 
 const StudentRegistration = () => {
     const [email, setEmail] = useState("");
@@ -56,39 +56,30 @@ const StudentRegistration = () => {
 
         // Walidacja adresu e-mail
         if (!validateEmail(email)) {
-            notify("Niepoprawny email. Wpisz poprawny adres!");
-            console.error('Incorrect email.');
+            notifyError("Niepoprawny email. Wpisz poprawny adres!");
         }
 
         if (!validatePhone(phone)) {
-            notify("Niepoprawny numer telefonu");
-            console.error('Incorrect phone number.');
-
+            notifyError("Niepoprawny numer telefonu");
         }
-         //Walidacja URL portfolio
-         if (!validatePortfolioUrls(portfolioUrls)) {
-            notify("Niepoprawny url dla portfolio");
-            console.error('Incorrect portfolio URL.');
+        //Walidacja URL portfolio
+        if (!validatePortfolioUrls(portfolioUrls)) {
+            notifyError("Niepoprawny url dla portfolio");
         }
 
         //Walidacja github
         if (!validateGithub(github)) {
-            notify("Niepoprawny numer user Github");
-            console.error('Incorrect Github user.');
+            notifyError("Niepoprawny numer user Github");
         }
         //Walidacja miesiace doswiadczenia
         if (!validatemonthsOfCommercialExp(monthsOfCommercialExp)) {
-            notify("Niepoprawna wartiść dla miesięcy");
-            console.error('Incorrect commercial experiecne.');
+            notifyError("Niepoprawna wartiść dla miesięcy");
         }
         // Walidacja oczekiwane wynagrodzenie
         if (!validateExpectedSalary(expectedSalary)) {
-            notify("Niepoprawny kwota oczekiwanego wynagrodzenia");
-            console.error('Incorrect salary amount.');
+            notifyError("Niepoprawny kwota oczekiwanego wynagrodzenia");
         }
-
-        console.log(formData)
-    }  
+    }
 
 
     return (

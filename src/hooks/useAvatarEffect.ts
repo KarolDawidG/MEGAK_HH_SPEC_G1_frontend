@@ -16,7 +16,6 @@ export const useAvatarEffect = ({ github, setAvatarSrc }: UseAvatarEffectProps):
                     setAvatarSrc('/default_user_icon.jpg');
                 }
             } catch (error) {
-                console.error('Błąd podczas pobierania linku do avatara', error);
                 setAvatarSrc('/default_user_icon');
             }
         };

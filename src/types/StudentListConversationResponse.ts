@@ -1,19 +1,6 @@
-import { contractTypeEnum, workTypeEnum } from "./StudentInterface";
+import { StudentListResponse } from "./StudentListResponse";
 
-export interface StudentListResponse {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    expectedWorkType: workTypeEnum;
-    targetWorkCity: string;
-    expectedContractType: contractTypeEnum;
-    expectedSalary: number;
-    canTakeApprenticeship: boolean;
-    monthsOfCommercialExperiecne: number;
-    projectDegree: number;
-    teamProjectDegree: number;
-    courseCompletion: number;
-    courseEngagement: number;
+export interface StudentConversationListResponse extends StudentListResponse {
     reservedTo: Date;
     githubUserName: string;
 };

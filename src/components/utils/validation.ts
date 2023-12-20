@@ -1,4 +1,4 @@
-import { notify } from "./Notify";
+import { notify, notifyError } from "./Notify";
 import axios from 'axios';
 
 // Walidacja url
@@ -43,10 +43,9 @@ export const validateGithub = async (github: string) => {
         const response = await axios.get(`https://api.github.com/users/${github}`);
 
         if (response.status !== 200) {
-            console.log("Nie znaleziono użytkownika.");
-            notify("Nie znaleziono użytkownika.");
+            notifyError("Nie znaleziono użytkownika.");
         }
     } catch (error) {
-        console.error('Błąd logowania', error);
+        notifyError('Błąd logowania');
     }
 }

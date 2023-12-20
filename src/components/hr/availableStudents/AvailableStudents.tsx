@@ -15,6 +15,7 @@ import { Container, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { StudentListResponse } from '../../../types/StudentListResponse';
 import { handleReserveClick } from '../../utils/buttonUtils';
+import { notifyError } from '../../utils/Notify';
 
 export const AvailableStudents = () => {
     const [expandedStudents, setExpandedStudents] = useState<string[]>([]);
@@ -35,7 +36,7 @@ export const AvailableStudents = () => {
                 setStudents(response.data[0]);
                 setQuantityStudents(response.data[1]);
             } catch (error) {
-                console.error('Błąd podczas pobierania danych:', error);
+                notifyError('Błąd podczas pobierania danych:');
             }
         };
 

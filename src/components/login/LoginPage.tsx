@@ -8,18 +8,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import {useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { URL_LOGIN } from '../utils/backend-links';
-import { notify } from "../utils/Notify";
+import { notify, notifyError } from "../utils/Notify";
 import { validateEmail } from '../utils/validation';
 import { AuthContext } from '../../AuthContext';
 
 
 const LoginPage = () => {
     const authContext = useContext(AuthContext);
-        if (!authContext) {
-            return <div>Loading...</div>; // test
-        }
+    if (!authContext) {
+        return <div>Loading...</div>; // test
+    }
 
     const { setAuth } = authContext;
     const [email, setEmail] = useState("");
@@ -30,8 +30,7 @@ const LoginPage = () => {
         event.preventDefault();
 
         if (!validateEmail(email)) {
-            notify("Incorrect email. Please type correct data!");
-            console.error('Incorrect email.');
+            notifyError("Nie poprawny email, podaj poprawne adres!");
             return;
         }
 
@@ -47,30 +46,29 @@ const LoginPage = () => {
                 setAuth(response.data);
                 await fetchUserData();
                 notify(response.data);
-                
+
             }
-            
-            if (response.data.role === 0){
+
+            if (response.data.role === 0) {
                 redirect("/user-areczek");
-                notify("Welcome User");
+                notify("Witam użytkowniku");
             }
-            if (response.data.role === 1){
+            if (response.data.role === 1) {
                 redirect("/hr");
-                notify("Welcome HR");
+                notify("Witaj HR");
             }
-            if (response.data.role === 2){
+            if (response.data.role === 2) {
                 redirect("/admin");
-                notify("Welcome root");
+                notify("Witaj root");
             }
-            
-            
+
+
 
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify(error.response.data.message); // Wyświetlenie wiadomości o błędzie
             } else {
-                console.error('Błąd logowania', error);
-                notify("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
+                notifyError("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
             }
         }
     };
@@ -81,23 +79,21 @@ const LoginPage = () => {
                 withCredentials: true
             });
             setAuth(res.data);
-            console.log(`Dane fetchUserData: ${res.data}`);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                notify(`Error: ${error.response.data.message}`); // Wyświetlenie wiadomości o błędzie
+                notifyError(`Error: ${error.response.data.message}`); // Wyświetlenie wiadomości o błędzie
             } else {
-                console.error('Błąd logowania', error);
-                notify("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
+                notifyError("Wystąpił problem podczas logowania. Spróbuj ponownie."); // Ogólna wiadomość o błędzie
             }
         }
     }
 
     useEffect(() => {
         if (authContext?.auth) {
-            console.log('Zaktualizowano auth:', authContext.auth);
+            notify('Logowanie poprawne');
         }
     }, [authContext?.auth]);
-    
+
 
     return (
 
@@ -108,7 +104,7 @@ const LoginPage = () => {
                 justifyContent="center"
                 alignItems="center"
                 minHeight="100vh"
-                flexDirection= 'column'
+                flexDirection='column'
             >
                 <img src="/Megaklogo.png" alt="MegaK logo" height="75" ></img>
 

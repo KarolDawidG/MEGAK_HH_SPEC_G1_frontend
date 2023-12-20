@@ -34,7 +34,6 @@ const globalTypographyStyleData = {
 };
 
 export const StudentDetails: React.FC<{ obj: StudentListResponse }> = ({ obj }) => {
-    console.log('Dane otrzymane w StudentDetails:', obj);
 
     const getContractTypeLabel = (contractType: number): string => {
         contractType = Number(contractType);
